@@ -11,3 +11,7 @@ __pycache__/
 # IDE configurations (Optional - e.g., PyCharm or VS Code)
 .idea/
 .vscode/
+
+
+
+.json

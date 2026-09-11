@@ -1,0 +1,1267 @@
+{
+  "pmcid": "PMC6723242",
+  "pmid": "31398884",
+  "doi": "10.3390/nu11081837",
+  "title": "Curcumin and Type 2 Diabetes Mellitus: Prevention and Treatment",
+  "journal": "Nutrients",
+  "issn": "2072-6643",
+  "authors": [
+    {
+      "name": "Francesca Pivari",
+      "affiliation_ids": [],
+      "affiliations": []
+    },
+    {
+      "name": "Alessandra Mingione",
+      "affiliation_ids": [],
+      "affiliations": []
+    },
+    {
+      "name": "Caterina Brasacchio",
+      "affiliation_ids": [],
+      "affiliations": []
+    },
+    {
+      "name": "Laura Soldati",
+      "affiliation_ids": [],
+      "affiliations": []
+    }
+  ],
+  "publication_date": "2019-8-08",
+  "keywords": [
+    "curcumin",
+    "type 2 diabetes mellitus",
+    "inflammation",
+    "antioxidant activity",
+    "clinical trials"
+  ],
+  "abstract": "Type 2 diabetes mellitus (T2DM) is an ensemble of metabolic diseases that has reached pandemic dimensions all over the world. The multifactorial nature of the pathology makes patient management, which includes lifelong drug therapy and lifestyle modification, extremely challenging. It is well known that T2DM is a preventable disease, therefore lowering the incidence of new T2DM cases could be a key strategy to reduce the global impact of diabetes. Currently, there is growing evidence on the efficacy of the use of medicinal plants supplements for T2DM prevention and management. Among these medicinal plants, curcumin is gaining a growing interest in the scientific community. Curcumin is a bioactive molecule present in the rhizome of theCurcuma longaplant, also known as turmeric. Curcumin has different pharmacological and biological effects that have been described by both in vitro and in vivo studies, and include antioxidant, cardio-protective, anti-inflammatory, anti-microbial, nephro-protective, anti-neoplastic, hepato-protective, immunomodulatory, hypoglycaemic and anti-rheumatic effects. In animal models, curcumin extract delays diabetes development, improves β-cell functions, prevents β-cell death, and decreases insulin resistance. The present review focuses on pre-clinical and clinical trials on curcumin supplementation in T2DM and discusses the peculiar mechanisms by which curcumin might ameliorate diabetes management.",
+  "body": [
+    {
+      "heading": "1. Introduction",
+      "paragraphs": [
+        "Diabetes has reached pandemic dimensions, affecting over 400 million people worldwide [ 1 ], and it is also becoming relevant in developing countries. Among the huge and heterogeneous number of patients with diabetes, type 2 diabetes mellitus (T2DM) represents the most prevalent form [ 2 ]. From the Global Burden of Diseases study (2016), it emerged that T2DM and its complications were responsible for the 22% increase in disability in the last ten years, impacting significantly on public health [ 3 ]. In recent years, enormous advances have been made in the field of diabetes prevention and treatment and in glycaemic management, but the prevalence of cardiovascular complications remains an important issue in T2DM patients [ 4 ]. Currently, the preferred therapies for T2DM treatment include the use of anti-diabetic drugs, lifestyle intervention (healthy nutrition and daily physical activity) and monitoring of arterial pressure and lipid profile. Effective prevention and treatment are needed to optimally manage diabetes patients. It is well known that T2DM is a preventable disease [ 5 ]. A rigorous prevention should be addressed to people with pre-diabetes or impaired glucose tolerance, who are at high risk of T2DM development. Such prevention encompasses lifestyle modifications, such as starting from a healthy diet and daily physical activity.",
+        "Currently, there is growing evidence on the efficacy of the use of medical plant supplements for T2DM prevention and management [ 6 , 7 , 8 ]. Among these medical plants, curcumin is gaining a growing interest in the scientific community. Curcumin is an active molecule present in the rhizome of Curcuma longa plant, also known as turmeric.",
+        "The biological and pharmacological effects of curcumin have been described by several in vitro and in vivo studies, and include antioxidant, anti-inflammatory, anti-microbial, cardio-protective, nephro-protective, anti-neoplastic, hepato-protective, immunomodulatory, hypoglycaemic and anti-rheumatic effects [ 9 , 10 , 11 , 12 ].",
+        "Regarding diabetes, an animal study highlighted that curcumin and its analogues have a mechanism of action similar to that of thiazolidinedione, an anti-diabetic drug, through peroxisome proliferator-activated receptor-γ (PPAR-γ) activation [ 13 ]. Thus, curcumin may be effective in the regulation of glycaemia and lipidaemia [ 14 ]—factors that play a key role in T2DM treatment. In particular, several randomized controlled trials (RCTs) have been performed to study effects of curcumin on glycaemic and lipid profiles in subjects with pre-diabetes [ 15 , 16 ] or T2DM [ 17 , 18 , 19 ].",
+        "The present review analyses the role of curcumin in T2DM prevention and treatment, focusing on the preclinical and clinical trials."
+      ],
+      "subsections": [
+        {
+          "heading": "1.1. Diabetes Mellitus and Its Complications",
+          "paragraphs": [
+            "T2DM is one of the most terrible chronic diseases that affect human health. In recent years, in developing countries, there was a 69% increase in the prevalence of diabetes, whereas in developed countries, a 20% increase is expected between 2010 and 2030 [ 20 ]. In particular, T2DM is a chronic and metabolic disease characterised by defects in pancreatic insulin secretion and (or) insulin effect on target tissues, generating a persistent state of hyperglycaemia, inducing metabolic alteration, cell-death and inflammation. The increased morbidity and mortality rates related to T2DM are often associated with vascular complications, such as cardiovascular diseases [ 21 ], nephropathy [ 22 ], retinopathy [ 23 ], endothelial dysfunction, dyslipidaemia and an increase of oxidative stress which is also due to inflammation [ 24 ]. In fact, diabetes is characterised by a chronic inflammation and insulin resistance due to the enhancement of pro-inflammatory cytokines production by monocytes infiltrate in adipose tissue. This condition is worsened by angiopoietin-like protein 2 (ANGPTL2), highly expressed in macrophages and adipose tissue, because of its role in T-lymphocytes/macrophages activation and accumulation, promoting impaired insulin response. Moreover, high serum ANGPTL2 levels are involved in the development of renal diabetic disease, because of its positive correlation with albumin-to-creatinine ratio and negative correlation with glomerular filtration rate (GFR) [ 25 ]. Among microvascular complications approximately 50% of T2DM patients developed a diabetic peripheral neuropathy, a chronic and progressive disorder affecting the peripheral nervous system and characterised by allodynia, pain and paraesthesia symptoms [ 26 ], caused by axonal degeneration and segmental demyelination [ 27 ]. Moreover, patients with T2DM are at high risk of infections, indirectly caused by diabetic neuropathy, impaired glycaemic control, and immune system dysregulation [ 28 , 29 ]. Diabetic patients are more prone to develop common infections, like cystitis, enteric infections, external otitis, pneumonia, appendicitis and peritonitis as well as rare and severe infections, such as emphysematous pyelonephritis [ 30 , 31 ]. Furthermore, T2DM patients have higher mortality rates for sepsis compared to other individuals [ 32 ]."
+          ],
+          "subsections": []
+        },
+        {
+          "heading": "1.2. Curcumin: Structure, Biological Activity and Bioavailability",
+          "paragraphs": [
+            "Turmeric plant, commonly utilised in food preparation as a spice (present also in curry powder) and in the scientific community, is recognised as Curcuma longa . This type of plant is characterised by orange tuberous rhizomes and is widely cultivated in South East Asia, where it is used as a natural therapeutic remedy for various pathological conditions since ancient times. The peculiar characteristics that have focused scientists’ attention on curcumin as a nutraceutical are the following: the antioxidant and anti-inflammatory activities and the safety of its pharmacological profile [ 33 ]. In addition, curcumin has a potential role both in the prevention and treatment of several diseases because of its variety of actions: anti-bacterial, anti-diabetic, anti-viral and anti-cancer activities [ 34 , 35 ]. This mechanism of action on several molecular pathways is due to the peculiar chemical structure of curcumin, able to have huge numbers of molecular targets. Among the biological effects, the inhibition of reactive oxygen species (ROS) production plays a key role, in particular for inflammatory diseases. In turmeric, several compounds coexist, structurally related to curcuminoids, including curcumin as the main active and most important constituent. The main curcuminoids in commercial turmeric extracts are curcumin (≈75%), demethoxycurcumin (≈20%), and bisdemethoxycurcumin (≈5%) [ 36 ].",
+            "Bioavailability represents the major issue in the use of curcumin as a nutritional supplement. In fact, different studies on curcumin bioavailability and pharmacokinetics recognized its low absorption rate in the gastro-intestinal tract and its rapid body elimination [ 37 ]. Several animal studies, especially in rodents, have described the rapid metabolism, low absorption, bio-distribution and rapid excretion of curcumin (oral administration) [ 38 , 39 , 40 ]. For these reasons, recent studies focused on developing new techniques to solve these issues and improve curcumin bioavailability, intestinal absorption and body distribution. These approaches include, for example, micellas, nanoparticles, liposomes and phospholipid complexes [ 41 ]. Among these approaches, one of the most promising is phytosome technology, which proved effective in the improvement of curcumin oral bioavailability. Moreover, its particular structure enhanced pharmacokinetic parameters after the oral administration of curcuminoids. Phytosomal curcumin efficacy and tolerability have been proven in the improvement of inflammatory diseases, such as cancer, cardiovascular disease and osteoarthritis. Importantly, there is a body of evidence for the clinical use of phytosomal curcumin in patients with solid tumours, uveitis, benign prostate hyperplasia, diabetic micro-angiopathy and retinopathy [ 9 , 42 ]. Other technologies that showed advantages in increasing polyphenols solubility and bioavailability include food lipid nanoparticles, in particular solid lipid nanoparticles. For example, Sun and colleagues discovered that curcumin lipid nanoparticles could lengthen in vitro cellular uptake and anti-tumour activity and increase the in vivo bioavailability of the loaded curcumin [ 43 ]. Moreover, curcumin encapsulation in camel β-casein micelle increased the solubility of curcumin by over 2000-fold [ 44 ]. This specific encapsulation influences curcumin antioxidant activity, cytotoxicity in an in vitro model of human leukemia and anti-proliferation activity against in vitro models of human colorectal and pancreatic cancer [ 45 , 46 ].",
+            "Various studies also demonstrated an increased oral bioavailability after curcumin nanoemulsion incorporation, facilitating its application as phytochemical in humans [ 47 ]."
+          ],
+          "subsections": []
+        }
+      ]
+    },
+    {
+      "heading": "2. Curcumin and Type 2 Diabetes Mellitus",
+      "paragraphs": [],
+      "subsections": [
+        {
+          "heading": "2.1. Molecular Mechanisms of Curcumin in T2DM",
+          "paragraphs": [
+            "Several studies have shown that curcumin improves the pathologic events in T2DM through different mechanisms and multiple molecular targets (see Table 1 ). In particular, curcumin is involved in the regulation of lipid metabolism. Curcumin reduces the gene expression of transcription factors involved in hepatic lipogenesis, such as the sterol regulatory element-binding protein 1c (SREBP1c), which promotes cholesterol synthesis and the carbohydrate response element-binding protein (ChREBP) [ 48 ]. Moreover, curcumin increases the activity of lipid mobilization enzymes, including carnitine palmitoyltransferase 1 (CPT1) and acyl-CoA cholesterol acyltransferase (ACAT).",
+            "In addition, an animal study found that curcumin is involved in the pathological fat accumulation in the liver through the up-regulation of PPAR-γ via AMPK activation [ 49 ]. Moreover, the anti-hyperglycaemic and anti-hyperlipidaemic effect of curcumin has been demonstrated in streptozotocin (STZ)-induced diabetic rats after curcumin supplementation (30–90 mg/kg of body weight) in a formulation of yogurt for a period of 31 days [ 50 ]. Recently, the same research group described that isolated treatments using curcumin (90 mg/kg of body weight) plus insulin (1 U/day vs. 4 U/day) decreased blood glucose, biomarkers of liver and kidney damage, improved lipid profile and hepatic antioxidants levels [ 51 ]. Curcumin supplementation (50 or 100 mg/kg of body weight) in STZ-induced diabetic rats decreased hyperglycaemia and vascular inflammation through the inhibition of MCP-1, IL-6, HbA1c, TNF-α and lipid peroxidation [ 52 ]. Moreover, a lot of data have shown that curcumin can improve insulin sensitivity through decreasing glycaemia and dyslipidaemia in high fat-fed rats [ 53 , 54 , 55 , 56 , 57 , 58 , 59 ].",
+            "Also, oxidative stress has been related to the pathogenesis of T2DM. The protective effect of curcumin against oxidative damage has been proven. Curcumin reduces lipid peroxidation through the normalization of antioxidant enzyme levels, such as superoxide dismutase, catalase and glutathione peroxidase [ 49 ]. The administration of tetrahydrocurcumin (80 mg/kg of body weight), a curcumin derivative, for a period of 45 days decreased fasting blood glucose (−55%) and STZ-induced diabetic rats increased their antioxidant defences [ 60 ].",
+            "Beyond oxidative stress, inflammation also plays a key role in the development of T2DM and its complications. Several studies on animal models of diabetes showed that Curcumin administration decreased the number of inflammatory factors in serum, such as IL-6, TNF-α, MCP-1, and it suppressed the NF-κB signalling pathway, defending against inflammation [ 21 , 52 ]. Also, in vivo studies demonstrated the beneficial effect of curcumin on adipose tissue through the inhibition of several pro-inflammatory mediators, such as MCP-1, IL-1β, TNFα, IL-6 and COX2 [ 61 ]. Finally, many authors have confirmed the anti-apoptotic effect of curcumin in diabetic rats with cardiomyopathy. In particular, apoptosis is stimulated in the hearts of rat diabetic cardiomyopathy and curcumin treatment significantly decreased myocardial cell apoptosis [ 62 ]. Moreover, curcumin prevents apoptotic and inflammatory process in cardiomyocytes through the inhibition of JNK phosphorylation [ 63 , 64 ]."
+          ],
+          "subsections": []
+        },
+        {
+          "heading": "2.2. What We Know from Clinical Trials?",
+          "paragraphs": [
+            "Currently, several animal models [ 65 ] and human subjects [ 66 , 67 , 68 ] have shown curcumin tolerability and safety, also at high doses (oral administration of 12 g/day). However, to date it is not recommended to prescribe curcumin supplementation in subjects under particular conditions, such as pregnant or lactating women, children or in patients with anaemia or liver disease due to few safe studies on humans. In animal models, on the other hand, there is a rich scientific literature on oral curcumin safety and tolerability also in delicate conditions [ 69 ]. Several in vivo studies have shown oral curcumin safety during pregnancy, also reporting non-mutagenic and non-genotoxic effects [ 70 , 71 ]. Lu and colleagues reported that high curcumin supplementation (100 mg/kg) could also improve glucose and insulin intolerance through activating the AMPK pathway in gestational diabetes mice [ 72 ]. Curcumin can be considered as an alternative treatment for gestational diabetes, but further studies are needed. Another open question refers to curcumin interaction with conventional drugs. In fact, some studies identified the effect of curcumin as cytochrome P450 inhibitor [ 73 ], conferring potential interaction with anticoagulants, cardiovascular drugs, antibiotics, anti-depressant and anti-cancer drugs [ 74 , 75 ].",
+            "Regarding curcumin use in T2DM prevention and treatment, the first data from clinical trials are reported in Table 2 . Mohammed et al. recently reviewed published studies focused on the hypoglycaemic action of the spice-derived bioactive ingredients. Despite many of the analysed ingredients showing weak hypoglycaemic effects, curcumin has demonstrated promising hypoglycaemic potential even if further scientific studies are needed to outline safe therapeutic protocols as hypoglycaemic adjuvant [ 76 ].",
+            "A randomized, double-blinded, placebo-controlled trial by Chuengsamarn and colleagues [ 77 ] included 240 prediabetic subjects. All subjects were randomly assigned to receive either curcumin (250 mg curcuminoids/day) or placebo capsules for 9 months. After this period, 16.4% of subjects in the placebo group were diagnosed with T2DM, whereas in the group treated with curcumin, none were diagnosed with diabetes. Moreover, in the study group, an improvement in the overall function of β-cells, with lower C-peptide and higher HOMA-β (homeostasis model assessment), emerged. In addition, subjects treated with curcumin, compared to the placebo group, showed higher adiponectin levels and lower insulin resistance.",
+            "Previously, Usharani and colleagues reported an improvement in the antioxidant status, comparable to that of atorvastatin, in T2DM patients supplemented with curcumin capsules (300 mg) for 8 weeks [ 78 ].",
+            "More recently, Neerati et al. reported that curcumin supplementation (475 mg) for a period of 10 days attenuated hyperglycaemia and hyperlipidaemia in T2DM subjects treated with glyburide. In particular, the low-density lipoprotein, very-low-density lipoprotein and triglycerides were significantly decreased, and the high-density lipoprotein content increased [ 41 ].",
+            "Panahi et al. performed an RCT to assess the effect of nutritional education in combination with curcumin (curcumin 500 mg/day in association with piperine 5 mg/day) or placebo in T2DM patients. A total of 100 T2DM patients aged between 18–65 years were enrolled, and glycaemic, hepatic and inflammatory markers were recorded at baseline and after 3 months. The main results reported a significant reduction in serum levels of C-peptide, HbA1c and glucose in the curcumin-treated group versus the placebo group. Despite expectations, there was no significant difference in the levels of C-reactive protein, an inflammation marker, between the two groups [ 79 ]. A previous RCT by the same research group focused on curcuminoid effects on ghrelin, adiponectin, leptin, and TNFα in a cohort of 118 T2DM patients. In particular, curcumin supplementation (curcumin 1000 mg with 10 mg piperine daily) for 12 weeks was effective on adiponectin increase, whereas the leptin/adiponectin ratio (an index of atherosclerosis degree) and leptin levels decreased independently by the weight loss, reflecting a reduction in the inflammatory TNFα marker [ 80 ]. The results of these two trials highlighted a beneficial and synergistic effect of curcumin and piperine on glycaemic, inflammatory and hepatic markers in T2DM patients. In particular, piperine seems to significantly improve curcumin intestinal absorption and bioavailability [ 81 ].",
+            "Na and colleagues performed an RCT to study the effect of curcumin on human blood glucose improvement that they previously found on diabetic rats [ 57 ]. One-hundred overweight/obese T2DM patients were randomly divided to the curcumin supplementation (300 mg/day) group or the placebo group for a period of three months. In this trial, the curcumin supplementation group obtained a significant reduction of fasting glycaemia, insulin resistance and HbA1c, together with a decrease in serum triglycerides and total free fatty acids (FFAs), and an improve in lipoprotein lipase activity. In particular, the glucose-lowering effect of curcumin is partially due to a decrease in serum FFA, which may result from promoting fatty acid oxidation and utilisation [ 18 ]."
+          ],
+          "subsections": []
+        }
+      ]
+    },
+    {
+      "heading": "3. Conclusions",
+      "paragraphs": [
+        "Numerous in vitro and in vivo studies have provided strong evidence for investigating curcumin efficacy against type 2 diabetes mellitus. Data reported in this review show that curcumin has therapeutic potential to counteract diabetes and its complications. All the described studies have shown that doses of up to 12 g per day of curcumin are safe, tolerable and non-toxic. The functional mechanism by which curcumin exerts its effect appears to be the modulation of many signalling molecules. However, this mechanism is not completely clear, due to the complexity of the disease. Based on clinical trials, the clinical efficacy of curcumin seems promising. However, this nutraceutical has poor bioavailability and limited adverse effects reported, representing a major limitation to the therapeutic utility.",
+        "Studies on the effect of curcumin on the control of glycaemia and lipid accumulation are lacking, especially in pre-diabetes patients. Moreover, the majority of studies performed tested different preparations of curcumin, especially in combination with other molecules (e.g., piperine), but studies testing pure curcumin are limited. Recently, the results of a meta-analysis have shown the beneficial effects of curcumin and its preparation in Asian pre-diabetes and T2DM patients [ 7 ], because most clinical trials were performed on this population. In particular, curcumin appears to be really effective on glycaemic parameters, especially on HbA1c levels. Evaluating all the data in the scientific literature, further clinical trials will be needed to evaluate the effects of curcumin and its specific dosage on glycaemic outcomes, particularly in pre-diabetes and T2DM patients."
+      ],
+      "subsections": []
+    }
+  ],
+  "has_full_text": true,
+  "references": [
+    {
+      "id": "B1-nutrients-11-01837",
+      "authors": [],
+      "title": null,
+      "source": "IDF Diabetes Altas",
+      "year": "2017",
+      "doi": null
+    },
+    {
+      "id": "B2-nutrients-11-01837",
+      "authors": [],
+      "title": null,
+      "source": "Global Report on Diabetes",
+      "year": "2016",
+      "doi": null
+    },
+    {
+      "id": "B3-nutrients-11-01837",
+      "authors": [
+        "Vos T.",
+        "Allen C.",
+        "Arora M.",
+        "Barber R.M.",
+        "Brown A.",
+        "Carter A.",
+        "Casey D.C.",
+        "Charlson F.J.",
+        "Chen A.Z.",
+        "Coggeshall M."
+      ],
+      "title": "Global, regional, and national incidence, prevalence, and years lived with disability for 310 diseases and injuries, 1990–2015: A systematic analysis for the Global Burden of Disease Study 2015",
+      "source": "Lancet",
+      "year": "2016",
+      "doi": "10.1016/S0140-6736(16)31678-6"
+    },
+    {
+      "id": "B4-nutrients-11-01837",
+      "authors": [
+        "Pirola L.",
+        "Balcerczyk A.",
+        "Okabe J.",
+        "El-Osta A."
+      ],
+      "title": "Epigenetic phenomena linked to diabetic complications",
+      "source": "Nat. Rev. Endocrinol.",
+      "year": "2010",
+      "doi": "10.1038/nrendo.2010.188"
+    },
+    {
+      "id": "B5-nutrients-11-01837",
+      "authors": [
+        "Johnson E.L.",
+        "Feldman H.",
+        "Butts A.",
+        "Billy C.D.R.",
+        "Dugan J.",
+        "Leal S.",
+        "Rhinehart A.S.",
+        "Shubrook J.H.",
+        "Trujillo J.",
+        "Neumiller J.J."
+      ],
+      "title": "Standards of medical care in diabetes—2019 abridged for primary care providers",
+      "source": "Clin. Diabetes",
+      "year": "2019",
+      "doi": "10.2337/cd18-0105"
+    },
+    {
+      "id": "B6-nutrients-11-01837",
+      "authors": [
+        "Demmers A.",
+        "Korthout H.",
+        "van Etten-Jamaludin F.S.",
+        "Kortekaas F.",
+        "Maaskant J.M."
+      ],
+      "title": "Effects of medicinal food plants on impaired glucose tolerance: A systematic review of randomized controlled trials",
+      "source": "Diabetes Res. Clin. Pract.",
+      "year": "2017",
+      "doi": "10.1016/j.diabres.2017.05.024"
+    },
+    {
+      "id": "B7-nutrients-11-01837",
+      "authors": [
+        "Poolsup N.",
+        "Suksomboon N.",
+        "Kurnianta P.D.M.",
+        "Deawjaroen K."
+      ],
+      "title": "Effects of curcumin on glycemic control and lipid profile in prediabetes and type 2 diabetes mellitus: A systematic review and meta-analysis",
+      "source": "PLoS ONE",
+      "year": "2019",
+      "doi": "10.1371/journal.pone.0215840"
+    },
+    {
+      "id": "B8-nutrients-11-01837",
+      "authors": [
+        "Suksomboon N.",
+        "Poolsup N.",
+        "Boonkaew S.",
+        "Suthisisang C.C."
+      ],
+      "title": "Meta-analysis of the effect of herbal supplement on glycemic control in type 2 diabetes",
+      "source": "J. Ethnopharmacol.",
+      "year": "2011",
+      "doi": "10.1016/j.jep.2011.07.059"
+    },
+    {
+      "id": "B9-nutrients-11-01837",
+      "authors": [
+        "Mirzaei H.",
+        "Shakeri A.",
+        "Rashidi B.",
+        "Jalili A.",
+        "Banikazemi Z.",
+        "Sahebkar A."
+      ],
+      "title": "Phytosomal curcumin: A review of pharmacokinetic, experimental and clinical studies",
+      "source": "Biomed. Pharmacother.",
+      "year": "2017",
+      "doi": "10.1016/j.biopha.2016.11.098"
+    },
+    {
+      "id": "B10-nutrients-11-01837",
+      "authors": [
+        "Derosa G.",
+        "Maffioli P.",
+        "Simental-Mendía L.E.",
+        "Bo S.",
+        "Sahebkar A."
+      ],
+      "title": "Effect of curcumin on circulating interleukin-6 concentrations: A systematic review and meta-analysis of randomized controlled trials",
+      "source": "Pharmacol. Res.",
+      "year": "2016",
+      "doi": "10.1016/j.phrs.2016.07.004"
+    },
+    {
+      "id": "B11-nutrients-11-01837",
+      "authors": [
+        "Strimpakos A.S.",
+        "Sharma R.A."
+      ],
+      "title": "Curcumin: Preventive and Therapeutic Properties in Laboratory Studies and Clinical Trials",
+      "source": "Antioxid. Redox Signal.",
+      "year": "2008",
+      "doi": "10.1089/ars.2007.1769"
+    },
+    {
+      "id": "B12-nutrients-11-01837",
+      "authors": [
+        "Aggarwal B.B.",
+        "Harikumar K.B."
+      ],
+      "title": "Potential therapeutic effects of curcumin, the anti-inflammatory agent, against neurodegenerative, cardiovascular, pulmonary, metabolic, autoimmune and neoplastic diseases",
+      "source": "Int. J. Biochem. Cell Biol.",
+      "year": "2009",
+      "doi": "10.1016/j.biocel.2008.06.010"
+    },
+    {
+      "id": "B13-nutrients-11-01837",
+      "authors": [
+        "Nishiyama T.",
+        "Mae T.",
+        "Kishida H.",
+        "Tsukagawa M.",
+        "Mimaki Y.",
+        "Kuroda M.",
+        "Sashida Y.",
+        "Takahashi K.",
+        "Kawada T.",
+        "Nakagawa K."
+      ],
+      "title": "Curcuminoids and sesquiterpenoids in turmeric (Curcuma longa L.) Suppress an increase in blood glucose level in type 2 diabetic KK-Aγ mice",
+      "source": "J. Agric. Food Chem.",
+      "year": "2005",
+      "doi": "10.1021/jf0483873"
+    },
+    {
+      "id": "B14-nutrients-11-01837",
+      "authors": [
+        "Kim H.S.",
+        "Hwang Y.C.",
+        "Koo S.H.",
+        "Park K.S.",
+        "Lee M.S.",
+        "Kim K.W.",
+        "Lee M.K."
+      ],
+      "title": "PPAR-γ Activation Increases Insulin Secretion through the Up-regulation of the Free Fatty Acid Receptor GPR40 in Pancreatic β-Cells",
+      "source": "PLoS ONE",
+      "year": "2013",
+      "doi": "10.1371/journal.pone.0050128"
+    },
+    {
+      "id": "B15-nutrients-11-01837",
+      "authors": [
+        "Rahmani S.",
+        "Asgary S.",
+        "Askari G.",
+        "Keshvari M.",
+        "Hatamipour M.",
+        "Feizi A.",
+        "Sahebkar A."
+      ],
+      "title": "Treatment of Non-alcoholic Fatty Liver Disease with Curcumin: A Randomized Placebo-controlled Trial",
+      "source": "Phyther. Res.",
+      "year": "2016",
+      "doi": "10.1002/ptr.5659"
+    },
+    {
+      "id": "B16-nutrients-11-01837",
+      "authors": [
+        "Yang Y.S.",
+        "Su Y.F.",
+        "Yang H.W.",
+        "Lee Y.H.",
+        "Chou J.I.",
+        "Ueng K.C."
+      ],
+      "title": "Lipid-lowering effects of curcumin in patients with metabolic syndrome: A randomized, double-blind, placebo-controlled trial",
+      "source": "Phyther. Res.",
+      "year": "2014",
+      "doi": "10.1002/ptr.5197"
+    },
+    {
+      "id": "B17-nutrients-11-01837",
+      "authors": [
+        "Adab Z.",
+        "Eghtesadi S.",
+        "Vafa M.R.",
+        "Heydari I.",
+        "Shojaii A.",
+        "Haqqani H.",
+        "Arablou T.",
+        "Eghtesadi M."
+      ],
+      "title": "Effect of turmeric on glycemic status, lipid profile, hs-CRP, and total antioxidant capacity in hyperlipidemic type 2 diabetes mellitus patients",
+      "source": "Phyther. Res.",
+      "year": "2019",
+      "doi": "10.1002/ptr.6312"
+    },
+    {
+      "id": "B18-nutrients-11-01837",
+      "authors": [
+        "Na L.X.",
+        "Li Y.",
+        "Pan H.Z.",
+        "Zhou X.L.",
+        "Sun D.J.",
+        "Meng M.",
+        "Li X.X.",
+        "Sun C.H."
+      ],
+      "title": "Curcuminoids exert glucose-lowering effect in type 2 diabetes by decreasing serum free fatty acids: A double-blind, placebo-controlled trial",
+      "source": "Mol. Nutr. Food Res.",
+      "year": "2013",
+      "doi": "10.1002/mnfr.201200131"
+    },
+    {
+      "id": "B19-nutrients-11-01837",
+      "authors": [
+        "Chuengsamarn S.",
+        "Rattanamongkolgul S.",
+        "Phonrat B.",
+        "Tungtrongchitr R.",
+        "Jirawatnotai S."
+      ],
+      "title": "Reduction of atherogenic risk in patients with type 2 diabetes by curcuminoid extract: A randomized controlled trial",
+      "source": "J. Nutr. Biochem.",
+      "year": "2014",
+      "doi": "10.1016/j.jnutbio.2013.09.013"
+    },
+    {
+      "id": "B20-nutrients-11-01837",
+      "authors": [
+        "Shaw J.E.",
+        "Sicree R.A.",
+        "Sicree R.A.",
+        "Zimmet P.Z."
+      ],
+      "title": "Global estimates of the prevalence of diabetes for 2010 and 2030",
+      "source": "Diabetes Res. Clin. Pract.",
+      "year": "2010",
+      "doi": "10.1016/j.diabres.2009.10.007"
+    },
+    {
+      "id": "B21-nutrients-11-01837",
+      "authors": [
+        "Zheng J.",
+        "Cheng J.",
+        "Zheng S.",
+        "Feng Q.",
+        "Xiao X."
+      ],
+      "title": "Curcumin, a polyphenolic curcuminoid with its protective effects and molecular mechanisms in diabetes and diabetic cardiomyopathy",
+      "source": "Front. Pharmacol.",
+      "year": "2018",
+      "doi": "10.3389/fphar.2018.00472"
+    },
+    {
+      "id": "B22-nutrients-11-01837",
+      "authors": [
+        "Lu M.",
+        "Yin N.",
+        "Liu W.",
+        "Cui X.",
+        "Chen S.",
+        "Wang E."
+      ],
+      "title": "Curcumin Ameliorates Diabetic Nephropathy by Suppressing NLRP3 Inflammasome Signaling",
+      "source": "Biomed Res. Int.",
+      "year": "2017",
+      "doi": "10.1155/2017/1516985"
+    },
+    {
+      "id": "B23-nutrients-11-01837",
+      "authors": [
+        "Maugeri A.",
+        "Mazzone M.G.",
+        "Giuliano F.",
+        "Vinciguerra M.",
+        "Basile G.",
+        "Barchitta M.",
+        "Agodi A."
+      ],
+      "title": "Curcumin Modulates DNA Methyltransferase Functions in a Cellular Model of Diabetic Retinopathy",
+      "source": "Oxid. Med. Cell. Longev.",
+      "year": "2018",
+      "doi": "10.1155/2018/5407482"
+    },
+    {
+      "id": "B24-nutrients-11-01837",
+      "authors": [
+        "Roxo D.F.",
+        "Arcaro C.A.",
+        "Gutierres V.O.",
+        "Costa M.C.",
+        "Oliveira J.O.",
+        "Lima T.F.O.",
+        "Assis R.P.",
+        "Brunetti I.L.",
+        "Baviera A.M."
+      ],
+      "title": "Curcumin combined with metformin decreases glycemia and dyslipidemia, and increases paraoxonase activity in diabetic rats",
+      "source": "Diabetol. Metab. Syndr.",
+      "year": "2019",
+      "doi": "10.1186/s13098-019-0431-0"
+    },
+    {
+      "id": "B25-nutrients-11-01837",
+      "authors": [
+        "Tabata M.",
+        "Kadomatsu T.",
+        "Fukuhara S.",
+        "Miyata K.",
+        "Ito Y.",
+        "Endo M.",
+        "Urano T.",
+        "Zhu H.J.",
+        "Tsukano H.",
+        "Tazume H."
+      ],
+      "title": "Angiopoietin-like Protein 2 Promotes Chronic Adipose Tissue Inflammation and Obesity-Related Systemic Insulin Resistance",
+      "source": "Cell Metab.",
+      "year": "2009",
+      "doi": "10.1016/j.cmet.2009.08.003"
+    },
+    {
+      "id": "B26-nutrients-11-01837",
+      "authors": [
+        "Edwards J.L.",
+        "Vincent A.M.",
+        "Cheng H.T.",
+        "Feldman E.L."
+      ],
+      "title": "Diabetic neuropathy: Mechanisms to management",
+      "source": "Pharmacol. Ther.",
+      "year": "2008",
+      "doi": "10.1016/j.pharmthera.2008.05.005"
+    },
+    {
+      "id": "B27-nutrients-11-01837",
+      "authors": [
+        "Veves A.",
+        "Malik R.A.",
+        "Lye R.H.",
+        "Masson E.A.",
+        "Sharma A.K.",
+        "Schady W.",
+        "Boulton A.J.M."
+      ],
+      "title": "The Relationship Between Sural Nerve Morphometric Findings and Measures of Peripheral Nerve Function in Mild Diabetic Neuropathy",
+      "source": "Diabet. Med.",
+      "year": "1991",
+      "doi": "10.1111/j.1464-5491.1991.tb01530.x"
+    },
+    {
+      "id": "B28-nutrients-11-01837",
+      "authors": [
+        "Valerius N.H.",
+        "Eff C.",
+        "Hansen N.E.",
+        "Karle H.",
+        "Nerup J.",
+        "Søeberg B.",
+        "Sørensen S.F."
+      ],
+      "title": "Neutrophil and Lymphocyte Function in Patients with Diabetes Mellitus",
+      "source": "Acta Med. Scand.",
+      "year": "1982",
+      "doi": "10.1111/j.0954-6820.1982.tb01983.x"
+    },
+    {
+      "id": "B29-nutrients-11-01837",
+      "authors": [
+        "Geerlings S.E.",
+        "Hoepelman A.I.M."
+      ],
+      "title": "Immune dysfunction in patients with diabetes mellitus (DM)",
+      "source": "FEMS Immunol. Med. Microbiol.",
+      "year": "1999",
+      "doi": "10.1111/j.1574-695X.1999.tb01397.x"
+    },
+    {
+      "id": "B30-nutrients-11-01837",
+      "authors": [
+        "Muller L.M.A.J.",
+        "Gorter K.J.",
+        "Hak E.",
+        "Goudzwaard W.L.",
+        "Schellevis F.G.",
+        "Hoepelman A.I.M.",
+        "Rutten G.E.H.M."
+      ],
+      "title": "Increased Risk of Common Infections in Patients with Type 1 and Type 2 Diabetes Mellitus",
+      "source": "Clin. Infect. Dis.",
+      "year": "2005",
+      "doi": "10.1086/431587"
+    },
+    {
+      "id": "B31-nutrients-11-01837",
+      "authors": [
+        "Geerlings S.E."
+      ],
+      "title": "Urinary tract infections in patients with diabetes mellitus: epidemiology, pathogenesis and treatment",
+      "source": "Int. J. Antimicrob. Agents",
+      "year": "2008",
+      "doi": "10.1016/j.ijantimicag.2007.07.042"
+    },
+    {
+      "id": "B32-nutrients-11-01837",
+      "authors": [
+        "Shah B.R.",
+        "Hux J.E."
+      ],
+      "title": "Quantifying the risk of infectious diseases for people with diabetes",
+      "source": "Diabetes Care",
+      "year": "2003",
+      "doi": "10.2337/diacare.26.2.510"
+    },
+    {
+      "id": "B33-nutrients-11-01837",
+      "authors": [
+        "Kunnumakkara A.B.",
+        "Bordoloi D.",
+        "Padmavathi G.",
+        "Monisha J.",
+        "Roy N.K.",
+        "Prasad S.",
+        "Aggarwal B.B."
+      ],
+      "title": "Curcumin, the golden nutraceutical: multitargeting for multiple chronic diseases",
+      "source": "Br. J. Pharmacol.",
+      "year": "2017",
+      "doi": "10.1111/bph.13621"
+    },
+    {
+      "id": "B34-nutrients-11-01837",
+      "authors": [
+        "Nabavi S.F.",
+        "Daglia M.",
+        "Moghaddam A.H.",
+        "Habtemariam S.",
+        "Nabavi S.M."
+      ],
+      "title": "Curcumin and liver disease: From chemistry to medicine",
+      "source": "Compr. Rev. Food Sci. Food Saf.",
+      "year": "2014",
+      "doi": "10.1111/1541-4337.12047"
+    },
+    {
+      "id": "B35-nutrients-11-01837",
+      "authors": [
+        "Perrone D.",
+        "Ardito F.",
+        "Giannatempo G.",
+        "Dioguardi M.",
+        "Troiano G.",
+        "Lo Russo L.",
+        "De Lillo A.",
+        "Laino L.",
+        "Lo Muzio L."
+      ],
+      "title": "Biological and therapeutic activities, and anticancer properties of curcumin (Review)",
+      "source": "Exp. Ther. Med.",
+      "year": "2015",
+      "doi": "10.3892/etm.2015.2749"
+    },
+    {
+      "id": "B36-nutrients-11-01837",
+      "authors": [
+        "Stanić Z."
+      ],
+      "title": "Curcumin, a Compound from Natural Sources, a True Scientific Challenge – A Review",
+      "source": "Plant Foods Hum. Nutr.",
+      "year": "2017",
+      "doi": "10.1007/s11130-016-0590-1"
+    },
+    {
+      "id": "B37-nutrients-11-01837",
+      "authors": [
+        "Anand P.",
+        "Kunnumakkara A.B.",
+        "Newman R.A.",
+        "Aggarwal B.B."
+      ],
+      "title": "Bioavailability of curcumin: Problems and promises",
+      "source": "Mol. Pharm.",
+      "year": "2007",
+      "doi": "10.1021/mp700113r"
+    },
+    {
+      "id": "B38-nutrients-11-01837",
+      "authors": [
+        "Wahlström B.",
+        "Blennow G."
+      ],
+      "title": "A Study on the Fate of Curcumin in the Rat",
+      "source": "Acta Pharmacol. Toxicol. (Copenh.)",
+      "year": "1978",
+      "doi": "10.1111/j.1600-0773.1978.tb02240.x"
+    },
+    {
+      "id": "B39-nutrients-11-01837",
+      "authors": [
+        "Pan M.H.",
+        "Huang T.M.",
+        "Lin J.K."
+      ],
+      "title": "Biotransformation of curcumin through reduction and glucuronidation in mice",
+      "source": "Drug Metab. Dispos.",
+      "year": "1999",
+      "doi": null
+    },
+    {
+      "id": "B40-nutrients-11-01837",
+      "authors": [
+        "Ireson C.",
+        "Orr S.",
+        "Jones D.J.L.",
+        "Verschoyle R.",
+        "Lim C.K.",
+        "Luo J.L.",
+        "Howells L.",
+        "Plummer S.",
+        "Jukes R.",
+        "Williams M."
+      ],
+      "title": "Characterization of metabolites of the chemopreventive agent curcumin in human and rat hepatocytes and in the rat in vivo, and evaluation of their ability to inhibit phorbol ester-induced prostaglandin E2production",
+      "source": "Cancer Res.",
+      "year": "2001",
+      "doi": null
+    },
+    {
+      "id": "B41-nutrients-11-01837",
+      "authors": [
+        "Neerati P.",
+        "Devde R.",
+        "Gangi A.K."
+      ],
+      "title": "Evaluation of the effect of curcumin capsules on glyburide therapy in patients with type-2 diabetes mellitus",
+      "source": "Phyther. Res.",
+      "year": "2014",
+      "doi": "10.1002/ptr.5201"
+    },
+    {
+      "id": "B42-nutrients-11-01837",
+      "authors": [
+        "Appendino G.",
+        "Belcaro G.",
+        "Cornelli U.",
+        "Luzzi R.",
+        "Togni S.",
+        "Dugall M.",
+        "Cesarone M.R.",
+        "Feragalli B.",
+        "Ippolito E.",
+        "Errichi B.M."
+      ],
+      "title": "Potential role of curcumin phytosome (Meriva) in controlling the evolution of diabetic microangiopathy. A pilot study",
+      "source": "Panminerva Med.",
+      "year": "2011",
+      "doi": null
+    },
+    {
+      "id": "B43-nutrients-11-01837",
+      "authors": [
+        "Sun J.B.",
+        "Bi C.",
+        "Chan H.M.",
+        "Sun S.P.",
+        "Zhang Q.W.",
+        "Zhen Y."
+      ],
+      "title": "Curcumin-loaded solid lipid nanoparticles have prolonged in vitro antitumour activity, cellular uptake and improved in vivo bioavailability",
+      "source": "Colloids Surf B Biointerfaces",
+      "year": "2013",
+      "doi": "10.1016/j.colsurfb.2013.06.032"
+    },
+    {
+      "id": "B44-nutrients-11-01837",
+      "authors": [
+        "Hu B.",
+        "Liu X.",
+        "Zhang C.",
+        "Zeng X."
+      ],
+      "title": "Food macromolecule based nanodelivery systems for enhancing the bioavailability of polyphenols",
+      "source": "J. Food Drug Anal.",
+      "year": "2017",
+      "doi": "10.1016/j.jfda.2016.11.004"
+    },
+    {
+      "id": "B45-nutrients-11-01837",
+      "authors": [
+        "Esmaili M.",
+        "Ghaffari S.M.",
+        "Moosavi-Movahedi Z.",
+        "Atri M.S.",
+        "Sharifizadeh A.",
+        "Farhadi M.",
+        "Yousefi R.",
+        "Chobert J.M.",
+        "Haertlé T.",
+        "Moosavi-Movahedi A.A."
+      ],
+      "title": "b-Casein-micelle as a nano vehicle for solubility enhancement of curcumin; food industry application",
+      "source": "LWT Food Sci. Technol.",
+      "year": "2011",
+      "doi": "10.1016/j.lwt.2011.05.023"
+    },
+    {
+      "id": "B46-nutrients-11-01837",
+      "authors": [
+        "Pan K.",
+        "Luo Y.C.",
+        "Gan Y.D.",
+        "Baek S.J.",
+        "Zhong Q.X."
+      ],
+      "title": "pH-driven encapsulation of curcumin in self-assembled casein nanoparticles for enhanced dispersibility and bioactivity",
+      "source": "Soft Matter",
+      "year": "2014",
+      "doi": "10.1039/c4sm00239c"
+    },
+    {
+      "id": "B47-nutrients-11-01837",
+      "authors": [
+        "Lu P.S.",
+        "Inbaraj B.S.",
+        "Chen B.H."
+      ],
+      "title": "Determination of oral bioavailability of curcuminoid dispersions and nanoemulsions prepared from Curcuma longa Linnaeus",
+      "source": "J. Sci. Food Agric.",
+      "year": "2018",
+      "doi": "10.1002/jsfa.8437"
+    },
+    {
+      "id": "B48-nutrients-11-01837",
+      "authors": [
+        "Seo K.I.",
+        "Choi M.S.",
+        "Jung U.J.",
+        "Kim H.J.",
+        "Yeo J.",
+        "Jeon S.M.",
+        "Lee M.K."
+      ],
+      "title": "Effect of curcumin supplementation on blood glucose, plasma insulin, and glucose homeostasis related enzyme activities in diabetic db/db mice",
+      "source": "Mol. Nutr. Food Res.",
+      "year": "2008",
+      "doi": "10.1002/mnfr.200700184"
+    },
+    {
+      "id": "B49-nutrients-11-01837",
+      "authors": [
+        "Jiménez-Flores L.M.",
+        "López-Briones S.",
+        "Macías-Cervantes M.H.",
+        "Ramírez-Emiliano J.",
+        "Pérez-Vázquez V."
+      ],
+      "title": "A PPARγ, NF-κB and AMPK-Dependent mechanism may be involved in the beneficial effects of curcumin in the diabetic db/db mice liver",
+      "source": "Molecules",
+      "year": "2014",
+      "doi": "10.3390/molecules19068289"
+    },
+    {
+      "id": "B50-nutrients-11-01837",
+      "authors": [
+        "Gutierres V.O.",
+        "Pinheiro C.M.",
+        "Assis R.P.",
+        "Vendramini R.C.",
+        "Pepato M.T.",
+        "Brunetti I.L."
+      ],
+      "title": "Curcumin-supplemented yoghurt improves physiological and biochemical markers of experimental diabetes",
+      "source": "Br. J. Nutr.",
+      "year": "2012",
+      "doi": "10.1017/S0007114511005769"
+    },
+    {
+      "id": "B51-nutrients-11-01837",
+      "authors": [
+        "Gutierres V.O.",
+        "Assis R.P.",
+        "Arcaro C.A.",
+        "Oliveira J.O.",
+        "Lima T.F.O.",
+        "Beretta A.L.R.Z.",
+        "Costa P.I.",
+        "Baviera A.M.",
+        "Brunetti I.L."
+      ],
+      "title": "Curcumin improves the effect of a reduced insulin dose on glycemic control and oxidative stress in streptozotocin-diabetic rats",
+      "source": "Phyther. Res.",
+      "year": "2019",
+      "doi": "10.1002/ptr.6291"
+    },
+    {
+      "id": "B52-nutrients-11-01837",
+      "authors": [
+        "Jain S.K.",
+        "Rains J.",
+        "Croad J.",
+        "Larson B.",
+        "Jones K."
+      ],
+      "title": "Curcumin Supplementation Lowers TNF-α, IL-6, IL-8, and MCP-1 Secretion in High Glucose-Treated Cultured Monocytes and Blood Levels of TNF-α, IL-6, MCP-1, Glucose, and Glycosylated Hemoglobin in Diabetic Rats",
+      "source": "Antioxid. Redox Signal.",
+      "year": "2008",
+      "doi": "10.1089/ars.2008.2140"
+    },
+    {
+      "id": "B53-nutrients-11-01837",
+      "authors": [
+        "Arafa H.M.M."
+      ],
+      "title": "Curcumin attenuates diet-induced hypercholesterolemia in rats",
+      "source": "Med. Sci. Monit.",
+      "year": "2005",
+      "doi": null
+    },
+    {
+      "id": "B54-nutrients-11-01837",
+      "authors": [
+        "Kempaiah R.K.",
+        "Srinivasan K."
+      ],
+      "title": "Beneficial influence of dietary curcumin, capsaicin and garlic on erythrocyte integrity in high-fat fed rats",
+      "source": "J. Nutr. Biochem.",
+      "year": "2006",
+      "doi": "10.1016/j.jnutbio.2005.09.005"
+    },
+    {
+      "id": "B55-nutrients-11-01837",
+      "authors": [
+        "Jang E.M.",
+        "Choi M.S.",
+        "Jung U.J.",
+        "Kim M.J.",
+        "Kim H.J.",
+        "Jeon S.M.",
+        "Shin S.K.",
+        "Seong C.N.",
+        "Lee M.K."
+      ],
+      "title": "Beneficial effects of curcumin on hyperlipidemia and insulin resistance in high-fat-fed hamsters",
+      "source": "Metabolism",
+      "year": "2008",
+      "doi": "10.1016/j.metabol.2008.06.014"
+    },
+    {
+      "id": "B56-nutrients-11-01837",
+      "authors": [
+        "El-Moselhy M.A.",
+        "Taye A.",
+        "Sharkawi S.S.",
+        "El-Sisi S.F.I.",
+        "Ahmed A.F."
+      ],
+      "title": "The antihyperglycemic effect of curcumin in high fat diet fed rats. Role of TNF-α and free fatty acids",
+      "source": "Food Chem. Toxicol.",
+      "year": "2011",
+      "doi": "10.1016/j.fct.2011.02.004"
+    },
+    {
+      "id": "B57-nutrients-11-01837",
+      "authors": [
+        "Na L.X.",
+        "Zhang Y.L.",
+        "Li Y.",
+        "Liu L.Y.",
+        "Li R.",
+        "Kong T.",
+        "Sun C.H."
+      ],
+      "title": "Curcumin improves insulin resistance in skeletal muscle of rats",
+      "source": "Nutr. Metab. Cardiovasc. Dis.",
+      "year": "2011",
+      "doi": "10.1016/j.numecd.2009.11.009"
+    },
+    {
+      "id": "B58-nutrients-11-01837",
+      "authors": [
+        "Kaur G.",
+        "Chintamaneni M."
+      ],
+      "title": "Amelioration of Obesity, Glucose Intolerance, and Oxidative Stress in High-Fat Diet and Low-Dose Streptozotocin-Induced Diabetic Rats by Combination Consisting of “Curcumin with Piperine and Quercetin”",
+      "source": "ISRN Pharmacol.",
+      "year": "2012",
+      "doi": "10.5402/2012/957283"
+    },
+    {
+      "id": "B59-nutrients-11-01837",
+      "authors": [
+        "Aziz M.T.A.",
+        "El Ibrashy I.N.",
+        "Mikhailidis D.P.",
+        "Rezq A.M.",
+        "Wassef M.A.A.",
+        "Fouad H.H.",
+        "Ahmed H.H.",
+        "Sabry D.A.",
+        "Shawky H.M.",
+        "Hussein R.E."
+      ],
+      "title": "Signaling mechanisms of a water soluble curcumin derivative in experimental type 1 diabetes with cardiomyopathy",
+      "source": "Diabetol. Metab. Syndr.",
+      "year": "2013",
+      "doi": "10.1186/1758-5996-5-13"
+    },
+    {
+      "id": "B60-nutrients-11-01837",
+      "authors": [
+        "Karthikesan K.",
+        "Pari L.",
+        "Menon V.P."
+      ],
+      "title": "Antihyperlipidemic effect of chlorogenic acid and tetrahydrocurcumin in rats subjected to diabetogenic agents",
+      "source": "Chem. Biol. Interact.",
+      "year": "2010",
+      "doi": "10.1016/j.cbi.2010.07.026"
+    },
+    {
+      "id": "B61-nutrients-11-01837",
+      "authors": [
+        "Gonzales A.M.",
+        "Orlando R.A."
+      ],
+      "title": "Curcumin and resveratrol inhibit nuclear factor-kappaB-mediated cytokine expression in adipocytes",
+      "source": "Nutr. Metab.",
+      "year": "2008",
+      "doi": "10.1186/1743-7075-5-17"
+    },
+    {
+      "id": "B62-nutrients-11-01837",
+      "authors": [
+        "Yu W.",
+        "Wu J.",
+        "Cai F.",
+        "Xiang J.",
+        "Zha W.",
+        "Fan D.",
+        "Guo S.",
+        "Ming Z.",
+        "Liu C."
+      ],
+      "title": "Curcumin Alleviates Diabetic Cardiomyopathy in Experimental Diabetic Rats",
+      "source": "PLoS ONE",
+      "year": "2012",
+      "doi": "10.1371/journal.pone.0052013"
+    },
+    {
+      "id": "B63-nutrients-11-01837",
+      "authors": [
+        "Ren J.",
+        "Sowers J.R."
+      ],
+      "title": "Application of a novel curcumin analog in the management of diabetic cardiomyopathy",
+      "source": "Diabetes",
+      "year": "2014",
+      "doi": "10.2337/db14-0863"
+    },
+    {
+      "id": "B64-nutrients-11-01837",
+      "authors": [
+        "Pan Y.",
+        "Wang Y.",
+        "Zhao Y.",
+        "Peng K.",
+        "Li W.",
+        "Wang Y.",
+        "Zhang J.",
+        "Zhou S.",
+        "Liu Q.",
+        "Li X."
+      ],
+      "title": "Inhibition of JNK phosphorylation by a novel curcumin analog prevents high glucose-induced inflammation and apoptosis in cardiomyocytes and the development of diabetic cardiomyopathy",
+      "source": "Diabetes",
+      "year": "2014",
+      "doi": "10.2337/db13-1577"
+    },
+    {
+      "id": "B65-nutrients-11-01837",
+      "authors": [
+        "Lao C.D.",
+        "Ruffin M.T. IV",
+        "Normolle D.",
+        "Heath D.D.",
+        "Murray S.I.",
+        "Bailey J.M.",
+        "Boggs M.E.",
+        "Crowell J.",
+        "Rock C.L.",
+        "Brenner D.E."
+      ],
+      "title": "Dose escalation of a curcuminoid formulation",
+      "source": "BMC Complement. Altern. Med.",
+      "year": "2006",
+      "doi": "10.1186/1472-6882-6-10"
+    },
+    {
+      "id": "B66-nutrients-11-01837",
+      "authors": [
+        "Shankar T.N.",
+        "Shantha N.V.",
+        "Ramesh H.P.",
+        "Murthy I.A.",
+        "Murthy V.S."
+      ],
+      "title": "Toxicity studies on turmeric (Curcuma longa): Acute toxicity studies in rats, guinea pigs & monkeys",
+      "source": "Indian J. Exp. Biol.",
+      "year": "1980",
+      "doi": null
+    },
+    {
+      "id": "B67-nutrients-11-01837",
+      "authors": [
+        "Chainani-Wu N.",
+        "Silverman S.",
+        "Reingold A.",
+        "Bostrom A.",
+        "Mc Culloch C.",
+        "Lozada-Nur F.",
+        "Weintraub J."
+      ],
+      "title": "A randomized, placebo-controlled, double-blind clinical trial of curcuminoids in oral lichen planus",
+      "source": "Phytomedicine",
+      "year": "2007",
+      "doi": "10.1016/j.phymed.2007.05.003"
+    },
+    {
+      "id": "B68-nutrients-11-01837",
+      "authors": [
+        "Hsu Y.C.",
+        "Weng H.C.",
+        "Lin S.R.",
+        "Chien Y.W."
+      ],
+      "title": "Curcuminoids - Cellular uptake by human primary colon cancer cells as quantitated by a sensitive Hplc assay and its relation with the inhibition of proliferation and apoptosis",
+      "source": "J. Agric. Food Chem.",
+      "year": "2007",
+      "doi": "10.1021/jf070684v"
+    },
+    {
+      "id": "B69-nutrients-11-01837",
+      "authors": [
+        "Soleimani V.",
+        "Amirhossein S.",
+        "Hossein H."
+      ],
+      "title": "Turmeric (Curcuma longa) and its major constituent (curcumin) as nontoxic and safe substances: Review",
+      "source": "Phytother. Res.",
+      "year": "2018",
+      "doi": "10.1002/ptr.6054"
+    },
+    {
+      "id": "B70-nutrients-11-01837",
+      "authors": [
+        "Murphy C.J.",
+        "Tang H.",
+        "Van Kirk E.A.",
+        "Shen Y.",
+        "Murdoch W.J."
+      ],
+      "title": "Reproductive effects of a pegylated curcumin",
+      "source": "Reprod. Toxicl.",
+      "year": "2012",
+      "doi": "10.1016/j.reprotox.2012.04.005"
+    },
+    {
+      "id": "B71-nutrients-11-01837",
+      "authors": [
+        "Liju V.B.",
+        "Jeena K.",
+        "Kuttan R."
+      ],
+      "title": "Acute and subchronic toxicity as well as mutagenic evaluation of essential oil from turmeric (Curcuma longa L)",
+      "source": "Food Chem. Toxicol.",
+      "year": "2013",
+      "doi": "10.1016/j.fct.2012.11.027"
+    },
+    {
+      "id": "B72-nutrients-11-01837",
+      "authors": [
+        "Lu X.",
+        "Wu F.",
+        "Jiang M.",
+        "Sun X.",
+        "Tian G."
+      ],
+      "title": "Curcumin ameliorates gestational diabetes in mice partly through activating AMPK",
+      "source": "Pharm. Biol.",
+      "year": "2019",
+      "doi": "10.1080/13880209.2019.1594311"
+    },
+    {
+      "id": "B73-nutrients-11-01837",
+      "authors": [
+        "Volak L.P.",
+        "Ghirmai S.",
+        "Cashman J.R.",
+        "Court M.H."
+      ],
+      "title": "Curcuminoids inhibit multiple human cytochromes P450 (CYP), UDP-glucuronosyl-transferase (UGT), and sulfotransferase (SULT) enzymes, while piperine is a relatively selective CYP3A4 inhibitor",
+      "source": "Drug Metabol. Dispos.",
+      "year": "2008",
+      "doi": "10.1124/dmd.108.020552"
+    },
+    {
+      "id": "B74-nutrients-11-01837",
+      "authors": [
+        "Bahramsoltani R.",
+        "Rahimi R.",
+        "Farzaei M.H."
+      ],
+      "title": "Pharmacokinetic interactions of curcuminoids with conventional drugs: A review",
+      "source": "J. Ethnopharmacol.",
+      "year": "2017",
+      "doi": "10.1016/j.jep.2017.07.022"
+    },
+    {
+      "id": "B75-nutrients-11-01837",
+      "authors": [
+        "Liu A.C.",
+        "Zhao L.X.",
+        "Lou H.X."
+      ],
+      "title": "Curcumin alters the pharmacokinetics of warfarin and clopidogrel in Wistar rats but has no effect on anticoagulation or antiplatelet aggregation",
+      "source": "Planta Med.",
+      "year": "2013",
+      "doi": "10.1055/s-0032-1328652"
+    },
+    {
+      "id": "B76-nutrients-11-01837",
+      "authors": [
+        "Mohammed A.",
+        "Islam M.S."
+      ],
+      "title": "Spice-derived bioactive ingredients: Potential agents or food adjuvant in the management of diabetes mellitus",
+      "source": "Front. Pharmacol.",
+      "year": "2018",
+      "doi": "10.3389/fphar.2018.00893"
+    },
+    {
+      "id": "B77-nutrients-11-01837",
+      "authors": [
+        "Chuengsamarn S.",
+        "Rattanamongkolgul S.",
+        "Luechapudiporn R.",
+        "Phisalaphong C.",
+        "Jirawatnotai S."
+      ],
+      "title": "Curcumin extract for prevention of type 2 diabetes",
+      "source": "Diabetes Care",
+      "year": "2012",
+      "doi": "10.2337/dc12-0116"
+    },
+    {
+      "id": "B78-nutrients-11-01837",
+      "authors": [
+        "Usharani P.",
+        "Mateen A.A.",
+        "Naidu M.U.R.",
+        "Raju Y.S.N.",
+        "Chandra N."
+      ],
+      "title": "Effect of NCB-02, Atorvastatin and Placebo on Endothelial Function, Oxidative Stress and Inflammatory Markers in Patients with Type 2 Diabetes Mellitus: A Randomized, Parallel-Group, Placebo-Controlled, 8-Week Study",
+      "source": "Drugs R D",
+      "year": "2008",
+      "doi": "10.2165/00126839-200809040-00004"
+    },
+    {
+      "id": "B79-nutrients-11-01837",
+      "authors": [
+        "Panahi Y.",
+        "Khalili N.",
+        "Sahebi E.",
+        "Namazi S.",
+        "Simental-Mendía L.E.",
+        "Majeed M.",
+        "Sahebkar A."
+      ],
+      "title": "Effects of Curcuminoids Plus Piperine on Glycemic, Hepatic and Inflammatory Biomarkers in Patients with Type 2 Diabetes Mellitus: A Randomized Double-Blind Placebo-Controlled Trial",
+      "source": "Drug Res.",
+      "year": "2018",
+      "doi": "10.1055/s-0044-101752"
+    },
+    {
+      "id": "B80-nutrients-11-01837",
+      "authors": [
+        "Panahi Y.",
+        "Khalili N.",
+        "Sahebi E.",
+        "Namazi S.",
+        "Atkin S.L.",
+        "Majeed M.",
+        "Sahebkar A."
+      ],
+      "title": "Curcuminoids Plus Piperine Modulate Adipokines in Type 2 Diabetes Mellitus",
+      "source": "Curr. Clin. Pharmacol.",
+      "year": "2018",
+      "doi": "10.2174/1574884713666180104095641"
+    },
+    {
+      "id": "B81-nutrients-11-01837",
+      "authors": [
+        "Patil V.M.",
+        "Das S.",
+        "Balasubramanian K."
+      ],
+      "title": "Quantum Chemical and Docking Insights into Bioavailability Enhancement of Curcumin by Piperine in Pepper",
+      "source": "J. Phys. Chem. A",
+      "year": "2016",
+      "doi": "10.1021/acs.jpca.6b01434"
+    }
+  ]
+}
