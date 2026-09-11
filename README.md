@@ -158,6 +158,7 @@ You need both files in the same folder — `gui.py` imports from `main.py`.
 ---
 
 ## Usage — GUI
+<img width="562" height="412" alt="image" src="https://github.com/user-attachments/assets/b3d10307-7235-4ca4-9aa9-8c2aead74a3a" />
 
 Run:
 
