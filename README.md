@@ -2,12 +2,6 @@
 
 Note: made with claude
 
-TODO:
-- [ ] store it all in a folder
-- [ ] figure out file naming convention
-- [ ] if the pmc has already been scraped: either skip it, or ask for confirmation
-
-
 # PMC Article Fetcher
 
 Fetch the full text of open-access PubMed Central (PMC) articles by PMCID and
@@ -26,6 +20,7 @@ Two ways to use it:
 - [PMC Article Fetcher](#pmc-article-fetcher)
   - [Contents](#contents)
   - [What it does](#what-it-does)
+  - [Features](#features)
   - [Project structure](#project-structure)
   - [Prerequisites](#prerequisites)
   - [Setup on Windows](#setup-on-windows)
@@ -60,6 +55,21 @@ parses that XML into a plain JSON dictionary containing:
 > only returned for articles in the **PMC Open Access subset** — for anything
 > outside it, EFetch (and therefore this tool) only returns citation/abstract
 > metadata, which is reflected in the output's `has_full_text` field.
+
+## Features
+An interactive GUI, with support for multiple scans at once
+
+<img width="562" height="412" alt="image" src="https://github.com/user-attachments/assets/17930b5f-a09f-4b7f-aa2e-8cfdf3fe3e23" />
+
+<img width="695" height="412" alt="image" src="https://github.com/user-attachments/assets/61a8533e-1683-4678-b590-59b9c77788ff" />
+
+
+Built in duplication detection
+
+<img width="382" height="172" alt="image" src="https://github.com/user-attachments/assets/a406e7f3-64ce-4d8b-858e-e014aedef6fe" />
+
+
+
 
 ## Project structure
 
@@ -158,7 +168,6 @@ You need both files in the same folder — `gui.py` imports from `main.py`.
 ---
 
 ## Usage — GUI
-<img width="562" height="412" alt="image" src="https://github.com/user-attachments/assets/b3d10307-7235-4ca4-9aa9-8c2aead74a3a" />
 
 Run:
 
