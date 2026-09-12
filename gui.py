@@ -4,9 +4,13 @@ GUI front-end for fetching PMC articles by PMCID or PMC article URL.
 Flow:
   1. A window opens with one input row (PMCID or PMC article URL).
   2. "+ Add another" appends more rows as needed.
-  3. "Submit" validates every non-empty row, then fetches each article
-     (reusing main.py's EFetch + JATS-parsing logic) and saves it as JSON.
-  4. A confirmation screen is shown if everything succeeded, or an error
+  3. "Submit" validates every non-empty row, then checks each PMCID against
+     what's already been saved to the output folder -- if a match is found,
+     a popup asks whether to skip it or fetch it again as a copy.
+  4. Remaining articles are fetched (reusing main.py's EFetch + JATS-parsing
+     logic) and saved as JSON in the output folder (an "output" directory
+     inside the project folder, by default).
+  5. A confirmation screen is shown if everything succeeded, or an error
      screen if anything failed -- either way, files that *did* succeed are
      saved to disk.
 """
@@ -114,7 +118,7 @@ class PMCFetcherApp:
         out_frame = ttk.Frame(self.main_frame)
         out_frame.pack(fill="x", pady=(8, 4))
         ttk.Label(out_frame, text="Save to:").pack(side="left")
-        self.output_dir = tk.StringVar(value=os.getcwd())
+        self.output_dir = tk.StringVar(value=pmc.ensure_output_dir())
         ttk.Entry(out_frame, textvariable=self.output_dir, width=40).pack(
             side="left", fill="x", expand=True, padx=6
         )
@@ -176,14 +180,32 @@ class PMCFetcherApp:
             )
             return
 
-        out_dir = self.output_dir.get().strip() or os.getcwd()
+        out_dir = self.output_dir.get().strip() or pmc.DEFAULT_OUTPUT_DIR
         if not os.path.isdir(out_dir):
             messagebox.showerror("Invalid folder", f"'{out_dir}' is not a valid folder.")
             return
 
+        # Check each PMCID against what's already been saved, *before* any
+        # request goes out. A modal popup per duplicate is the simplest way
+        # to ask -- far less code than an inline widget beside every row.
+        to_fetch = []
+        for pmcid in pmcids:
+            existing = pmc.existing_json_path(pmcid, out_dir)
+            if existing and not messagebox.askyesno(
+                "Already scraped",
+                f"{pmcid} already has a saved JSON:\n{existing}\n\n"
+                "Fetch it again and save as a copy? Choose No to skip it.",
+            ):
+                continue
+            to_fetch.append(pmcid)
+
+        if not to_fetch:
+            messagebox.showinfo("Nothing to do", "Every entry was skipped.")
+            return
+
         self.submit_btn.config(state="disabled")
-        self.status_label.config(text=f"Fetching {len(pmcids)} article(s)...")
-        threading.Thread(target=self._fetch_all, args=(pmcids, out_dir), daemon=True).start()
+        self.status_label.config(text=f"Fetching {len(to_fetch)} article(s)...")
+        threading.Thread(target=self._fetch_all, args=(to_fetch, out_dir), daemon=True).start()
         self.root.after(100, self._poll_queue)
 
     # ------------------------------------------------------------------
@@ -209,6 +231,7 @@ class PMCFetcherApp:
                 xml_text = pmc.fetch_pmc_xml(pmcid)
                 data = pmc.parse_article(xml_text, requested_pmcid=pmcid)
                 out_path = os.path.join(out_dir, f"{data['pmcid']}.json")
+                out_path = pmc.make_unique_path(out_path)  # e.g. "PMC123.json" -> "PMC123 (2).json"
                 with open(out_path, "w", encoding="utf-8") as f:
                     json.dump(data, f, indent=2, ensure_ascii=False)
                 results.append({"pmcid": pmcid, "ok": True, "path": out_path})

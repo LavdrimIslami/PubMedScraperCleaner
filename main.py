@@ -1,3 +1,32 @@
+"""
+Fetch the full text of a PubMed Central (PMC) article by PMCID and save it
+as structured JSON.
+
+USAGE
+-----
+    python main.py            Opens the GUI (gui.py) for entering PMCIDs/URLs.
+    python main.py --cli      Uses the original interactive terminal prompt.
+
+By default, JSON files are saved to an "output" folder inside the project
+directory (next to this file), created automatically if it doesn't exist.
+If a PMCID has already been saved there, you'll be asked whether to skip it
+or fetch it again and save it as a copy, before any request is sent.
+
+ ON DATA SOURCE
+-------------------
+As of August 2026, NCBI retired both the PMC Open Access Web Service
+(oa.fcgi) and the legacy PMC FTP bulk-download files as part of the
+"PMC Article Dataset Distribution Service" changes. Individual full-text
+XML for a single PMCID is now fetched via NCBI's E-utilities (EFetch),
+which returns the same NLM/JATS-formatted XML the old services provided.
+Full text is only returned for articles in the PMC Open Access subset;
+non-OA articles will only yield citation/abstract metadata.
+
+Docs: https://pmc.ncbi.nlm.nih.gov/tools/textmining/
+      https://www.ncbi.nlm.nih.gov/books/NBK25499/
+"""
+
+import argparse
 import json
 import os
 import sys
@@ -14,6 +43,12 @@ except ImportError:
     pass
 
 EFETCH_URL = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi"
+
+# Default save location: an "output" folder inside the project directory
+# (next to this file), rather than whatever the current working directory
+# happens to be when the script is launched.
+PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+DEFAULT_OUTPUT_DIR = os.path.join(PROJECT_DIR, "output")
 
 # We deliberately require lxml rather than falling back to Python's built-in
 # html.parser. html.parser follows HTML5 rules, which treat several tag names
@@ -74,6 +109,30 @@ def normalize_pmcid(raw):
 
 def text_or_none(tag):
     return tag.get_text(strip=True) if tag else None
+
+
+def ensure_output_dir(path=None):
+    """Creates (if needed) and returns the folder JSON files should be saved to."""
+    out_dir = path or DEFAULT_OUTPUT_DIR
+    os.makedirs(out_dir, exist_ok=True)
+    return out_dir
+
+
+def existing_json_path(pmcid, output_dir):
+    """Returns the path to pmcid's saved JSON in output_dir, or None if not scraped yet."""
+    path = os.path.join(output_dir, f"{pmcid}.json")
+    return path if os.path.isfile(path) else None
+
+
+def make_unique_path(path):
+    """Returns `path` unchanged if free, otherwise 'name (2).json', 'name (3).json', etc."""
+    if not os.path.exists(path):
+        return path
+    base, ext = os.path.splitext(path)
+    i = 2
+    while os.path.exists(f"{base} ({i}){ext}"):
+        i += 1
+    return f"{base} ({i}){ext}"
 
 
 # --------------------------------------------------------------------------
@@ -223,12 +282,15 @@ def parse_article(xml_text, requested_pmcid=None):
 
 
 # --------------------------------------------------------------------------
-# Main
+# Entry points
 # --------------------------------------------------------------------------
 
-def main():
+def run_cli():
+    """Interactive terminal flow: prompts for PMCIDs, fetches, saves JSON."""
     if not ensure_lxml():
         sys.exit(1)
+
+    out_dir = ensure_output_dir()
 
     raw = input("PMCID(s) (e.g. PMC1234567 — separate multiple with spaces/commas): ")
     ids = [x for x in raw.replace(",", " ").split() if x]
@@ -241,7 +303,7 @@ def main():
     api_key = os.environ.get("NCBI_API_KEY")
     email = os.environ.get("NCBI_EMAIL")
 
-    articles = []
+    saved = 0
     for i, raw_id in enumerate(ids):
         try:
             pmcid = normalize_pmcid(raw_id)
@@ -249,28 +311,77 @@ def main():
             print(f"Skipping '{raw_id}': {e}")
             continue
 
+        out_path = os.path.join(out_dir, f"{pmcid}.json")
+        if os.path.isfile(out_path):
+            choice = input(
+                f"{pmcid} already has a saved JSON ({out_path}). "
+                "[S]kip or [c]ontinue as a copy? "
+            ).strip().lower()
+            if choice.startswith("c"):
+                out_path = make_unique_path(out_path)
+            else:
+                print(f"Skipping {pmcid} (already scraped).\n")
+                continue
+
         print(f"Fetching {pmcid} ...")
         try:
             xml_text = fetch_pmc_xml(pmcid, api_key=api_key, email=email)
-            articles.append(parse_article(xml_text, requested_pmcid=pmcid))
+            data = parse_article(xml_text, requested_pmcid=pmcid)
         except (requests.RequestException, ValueError) as e:
-            print(f"  -> failed: {e}")
-            articles.append({"pmcid": pmcid, "error": str(e)})
+            print(f"  -> failed: {e}\n")
+            continue
+
+        with open(out_path, "w", encoding="utf-8") as f:
+            json.dump(data, f, indent=2, ensure_ascii=False)
+        print(f"  -> saved to {out_path}\n")
+        saved += 1
 
         if i < len(ids) - 1:
             time.sleep(0.11 if api_key else 0.34)  # stay under NCBI's rate limit
 
-    if not articles:
-        print("Nothing was fetched.")
+    print(f"Done. {saved} article(s) saved to {out_dir}")
+
+
+def run_gui():
+    """Launches the Tkinter front-end (gui.py) for entering PMCIDs/URLs."""
+    if not ensure_lxml():
         sys.exit(1)
 
-    output = articles[0] if len(articles) == 1 else articles
-    out_name = f"{articles[0]['pmcid']}.json" if len(articles) == 1 else "pmc_articles.json"
+    try:
+        import tkinter as tk
+    except ImportError:
+        print("Tkinter isn't available in this Python install, so the GUI can't be shown.")
+        print("On Debian/Ubuntu try:  sudo apt-get install python3-tk")
+        print("Or run the terminal version instead:  python main.py --cli")
+        sys.exit(1)
 
-    with open(out_name, "w", encoding="utf-8") as f:
-        json.dump(output, f, indent=2, ensure_ascii=False)
+    # Imported here (not at module level) because gui.py does `import main as pmc`
+    # at its own top level -- importing gui back at main.py's top level would
+    # create a circular import. Deferring it to inside this function sidesteps
+    # that entirely, since by the time run_gui() is actually called, main.py
+    # has already finished loading.
+    from gui import PMCFetcherApp
 
-    print(f"\nSaved {len(articles)} article(s) to {out_name}")
+    root = tk.Tk()
+    PMCFetcherApp(root)
+    root.mainloop()
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Fetch PMC article full text (by PMCID) as structured JSON."
+    )
+    parser.add_argument(
+        "--cli",
+        action="store_true",
+        help="Use the interactive terminal prompt instead of the GUI.",
+    )
+    args = parser.parse_args()
+
+    if args.cli:
+        run_cli()
+    else:
+        run_gui()
 
 
 if __name__ == "__main__":
