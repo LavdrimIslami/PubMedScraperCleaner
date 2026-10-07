@@ -3,13 +3,16 @@ GUI front-end for fetching PMC articles by PMCID or PMC article URL.
 
 Flow:
   1. A window opens with one input row (PMCID or PMC article URL).
-  2. "+ Add another" appends more rows as needed.
-  3. "Submit" validates every non-empty row, then checks each PMCID against
-     what's already been saved to the output folder -- if a match is found,
-     a popup asks whether to skip it or fetch it again as a copy.
-  4. Remaining articles are fetched (reusing main.py's EFetch + JATS-parsing
-     logic) and saved as JSON in the output folder (an "output" directory
-     inside the project folder, by default).
+  2. "+ Add another" appends more rows as needed, or "Paste a list..." opens
+     a modal textbox for pasting many PMCIDs/URLs at once -- any separator,
+     or none at all -- with a Go button to fetch them immediately.
+  3. Either path checks each PMCID against what's already been saved to the
+     output folder before any request is sent -- if a match is found, a
+     popup asks whether to skip it or fetch it again as a copy.
+  4. Remaining PMCIDs are queued and fetched (reusing main.py's EFetch +
+     JATS-parsing logic + rate-limited queue) and saved as JSON in the
+     output folder (an "output" directory inside the project folder, by
+     default).
   5. A confirmation screen is shown if everything succeeded, or an error
      screen if anything failed -- either way, files that *did* succeed are
      saved to disk.
@@ -17,16 +20,12 @@ Flow:
 
 import json
 import os
-import re
 import queue
 import threading
-import time
 import tkinter as tk
 from tkinter import ttk, messagebox, filedialog
 
-import main as pmc  # reuses normalize_pmcid / fetch_pmc_xml / parse_article / ensure_lxml
-
-PMCID_IN_TEXT_RE = re.compile(r"PMC\d+", re.IGNORECASE)
+import main as pmc  # reuses normalize_pmcid / extract_all_pmcids / fetch_pmc_xml / parse_article / ...
 
 
 def extract_pmcid(raw_text):
@@ -34,18 +33,13 @@ def extract_pmcid(raw_text):
     Accepts a bare PMCID ('PMC1234567', '1234567') or a PMC article URL
     (e.g. https://pmc.ncbi.nlm.nih.gov/articles/PMC1234567/) and returns a
     normalized 'PMC1234567' string. Raises ValueError if nothing usable
-    could be found in the text.
+    could be found in the text. A thin wrapper around main.py's
+    extract_all_pmcids, which does the actual parsing.
     """
-    raw_text = raw_text.strip()
-    if not raw_text:
-        raise ValueError("empty")
-
-    match = PMCID_IN_TEXT_RE.search(raw_text)
-    if match:
-        return pmc.normalize_pmcid(match.group(0))
-
-    # No "PMC..." substring found in there -- try treating it as a bare numeric ID.
-    return pmc.normalize_pmcid(raw_text)
+    ids = pmc.extract_all_pmcids(raw_text)
+    if not ids:
+        raise ValueError("empty or unrecognized")
+    return ids[0]
 
 
 class EntryRow:
@@ -109,10 +103,13 @@ class PMCFetcherApp:
         self.canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
 
-        # + Add row button
+        # + Add row / paste-a-list buttons
         add_row_frame = ttk.Frame(self.main_frame)
         add_row_frame.pack(fill="x", pady=(8, 4))
-        ttk.Button(add_row_frame, text="+ Add another", command=self.add_row).pack(anchor="w")
+        ttk.Button(add_row_frame, text="+ Add another", command=self.add_row).pack(side="left")
+        ttk.Button(add_row_frame, text="Paste a list...", command=self.open_paste_modal).pack(
+            side="left", padx=(8, 0)
+        )
 
         # Output folder picker
         out_frame = ttk.Frame(self.main_frame)
@@ -151,6 +148,39 @@ class PMCFetcherApp:
         if chosen:
             self.output_dir.set(chosen)
 
+    def open_paste_modal(self):
+        """A modal textbox for pasting a whole list of PMCIDs/URLs at once --
+        any separator, or none at all -- then a Go button to fetch them."""
+        modal = tk.Toplevel(self.root)
+        modal.title("Paste a list of PMCIDs")
+        modal.geometry("420x320")
+        modal.transient(self.root)
+        modal.grab_set()  # modal: blocks interaction with the main window until closed
+
+        ttk.Label(
+            modal,
+            text="Paste PMCIDs or PMC URLs below. Any separator is fine --\n"
+                 "newlines, commas, spaces, or nothing at all.",
+            justify="left",
+        ).pack(anchor="w", padx=12, pady=(12, 6))
+
+        text = tk.Text(modal, wrap="word")
+        text.pack(fill="both", expand=True, padx=12)
+        text.focus_set()
+
+        def go():
+            pmcids = pmc.extract_all_pmcids(text.get("1.0", "end"))
+            if not pmcids:
+                messagebox.showerror("Nothing found", "No PMCIDs were found in that text.", parent=modal)
+                return
+            modal.destroy()
+            self._start_fetch(pmcids)
+
+        btn_frame = ttk.Frame(modal)
+        btn_frame.pack(fill="x", padx=12, pady=12)
+        ttk.Button(btn_frame, text="Go", command=go).pack(side="right")
+        ttk.Button(btn_frame, text="Cancel", command=modal.destroy).pack(side="right", padx=(0, 8))
+
     # ------------------------------------------------------------------
     # Submission / validation
     # ------------------------------------------------------------------
@@ -180,6 +210,12 @@ class PMCFetcherApp:
             )
             return
 
+        self._start_fetch(pmcids)
+
+    def _start_fetch(self, pmcids):
+        """Shared by both the row-based Submit button and the paste modal's
+        Go button: validates the output folder, checks for duplicates, then
+        launches the background fetch."""
         out_dir = self.output_dir.get().strip() or pmc.DEFAULT_OUTPUT_DIR
         if not os.path.isdir(out_dir):
             messagebox.showerror("Invalid folder", f"'{out_dir}' is not a valid folder.")
@@ -226,7 +262,8 @@ class PMCFetcherApp:
             return
 
         results = []
-        for i, pmcid in enumerate(pmcids):
+
+        def handle_one(pmcid):
             try:
                 xml_text = pmc.fetch_pmc_xml(pmcid)
                 data = pmc.parse_article(xml_text, requested_pmcid=pmcid)
@@ -238,8 +275,11 @@ class PMCFetcherApp:
             except Exception as e:
                 results.append({"pmcid": pmcid, "ok": False, "error": str(e)})
 
-            if i < len(pmcids) - 1:
-                time.sleep(0.34)  # stay under NCBI's no-API-key rate limit
+        # The GUI doesn't currently take an NCBI API key, so it always stays
+        # under the no-key limit: burst up to the max per 1-second window,
+        # then wait out the rest of that window before the next burst.
+        pmcid_queue = pmc.build_pmcid_queue(pmcids)
+        pmc.drain_queue_rate_limited(pmcid_queue, handle_one, pmc.REQUESTS_PER_SECOND_NO_KEY)
 
         self.result_queue.put(results)
 

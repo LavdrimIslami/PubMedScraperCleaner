@@ -12,7 +12,7 @@ directory (next to this file), created automatically if it doesn't exist.
 If a PMCID has already been saved there, you'll be asked whether to skip it
 or fetch it again and save it as a copy, before any request is sent.
 
- ON DATA SOURCE
+NOTE ON DATA SOURCE
 -------------------
 As of August 2026, NCBI retired both the PMC Open Access Web Service
 (oa.fcgi) and the legacy PMC FTP bulk-download files as part of the
@@ -29,6 +29,8 @@ Docs: https://pmc.ncbi.nlm.nih.gov/tools/textmining/
 import argparse
 import json
 import os
+import queue
+import re
 import sys
 import time
 import warnings
@@ -49,6 +51,12 @@ EFETCH_URL = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi"
 # happens to be when the script is launched.
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 DEFAULT_OUTPUT_DIR = os.path.join(PROJECT_DIR, "output")
+
+# Some PMC articles have a <body>, but it's just a short pointer sentence
+# ("the full article is available at...") rather than real content -- common
+# when a publisher only deposited a PDF. A body under this many characters,
+# combined with an external link, is treated as a stub rather than full text.
+THIN_BODY_CHAR_THRESHOLD = 300
 
 # We deliberately require lxml rather than falling back to Python's built-in
 # html.parser. html.parser follows HTML5 rules, which treat several tag names
@@ -107,6 +115,32 @@ def normalize_pmcid(raw):
     return raw
 
 
+PMCID_BLOB_RE = re.compile(r"PMC\d+", re.IGNORECASE)
+
+
+def extract_all_pmcids(text):
+    """Finds every PMCID in a pasted blob of text -- bare codes, full PMC
+    URLs, or a mix -- no matter how they're separated (newlines, commas,
+    spaces, or nothing at all). Each 'PMC' + digits run marks where one ID
+    ends and the next begins, since a run of digits can't cross into the
+    next 'PMC' prefix on its own.
+
+    Falls back to splitting on whitespace/commas for a blob of bare numeric
+    IDs with no 'PMC' prefix at all (e.g. "1234567 7654321").
+    """
+    matches = PMCID_BLOB_RE.findall(text)
+    if matches:
+        return [normalize_pmcid(m) for m in matches]
+
+    ids = []
+    for token in text.replace(",", " ").split():
+        try:
+            ids.append(normalize_pmcid(token))
+        except ValueError:
+            continue
+    return ids
+
+
 def text_or_none(tag):
     return tag.get_text(strip=True) if tag else None
 
@@ -139,8 +173,18 @@ def make_unique_path(path):
 # Fetching
 # --------------------------------------------------------------------------
 
+RETRY_429_ATTEMPTS = 3
+RETRY_429_BACKOFF_SECONDS = 2.0
+
+
 def fetch_pmc_xml(pmcid, api_key=None, email=None, tool="pmc-fetch-script"):
-    """Calls EFetch for the given PMCID and returns the raw XML response text."""
+    """Calls EFetch for the given PMCID and returns the raw XML response text.
+
+    Retries automatically on a 429 (Too Many Requests) -- a safety net for
+    when a request gets rate-limited despite the queue's own pacing (clock
+    drift, other traffic from the same IP, etc). Honors the server's
+    Retry-After header when it sends one, otherwise waits a fixed backoff.
+    """
     params = {
         "db": "pmc",
         "id": pmcid,
@@ -153,9 +197,42 @@ def fetch_pmc_xml(pmcid, api_key=None, email=None, tool="pmc-fetch-script"):
     if api_key:
         params["api_key"] = api_key
 
-    resp = requests.get(EFETCH_URL, params=params, timeout=30)
-    resp.raise_for_status()
-    return resp.text
+    for attempt in range(RETRY_429_ATTEMPTS + 1):
+        resp = requests.get(EFETCH_URL, params=params, timeout=30)
+        if resp.status_code == 429 and attempt < RETRY_429_ATTEMPTS:
+            wait = float(resp.headers.get("Retry-After", RETRY_429_BACKOFF_SECONDS))
+            time.sleep(wait)
+            continue
+        resp.raise_for_status()
+        return resp.text
+
+
+# NCBI's E-utilities rate limit: https://www.ncbi.nlm.nih.gov/books/NBK25497/
+REQUESTS_PER_SECOND_NO_KEY = 3
+REQUESTS_PER_SECOND_WITH_KEY = 10
+
+
+def build_pmcid_queue(pmcids):
+    """Puts a list of PMCIDs into a FIFO queue.Queue, in order."""
+    q = queue.Queue()
+    for pmcid in pmcids:
+        q.put(pmcid)
+    return q
+
+
+def drain_queue_rate_limited(pmcid_queue, worker, requests_per_second):
+    """Pops PMCIDs off pmcid_queue and calls worker(pmcid) for each one,
+    waiting `1 / requests_per_second` seconds after every request so they're
+    spread evenly across time. NCBI's rate limit held up against a steady
+    pace much better than against bursts up to the limit followed by a
+    wait -- even though both nominally average the same requests/second.
+    """
+    interval = 1.0 / requests_per_second
+    while not pmcid_queue.empty():
+        pmcid = pmcid_queue.get()
+        worker(pmcid)
+        if not pmcid_queue.empty():
+            time.sleep(interval)
 
 
 # --------------------------------------------------------------------------
@@ -203,11 +280,64 @@ def parse_section(sec):
     }
 
 
-def parse_body(article):
-    body = article.find("body")
+def parse_body(body):
+    """Parses a <body> tag (or None) into a list of section dicts.
+
+    JATS allows <body> to hold bare <p> elements before any <sec> at all --
+    which is exactly the shape a minimal "see the publisher for full text"
+    stub tends to take, with no <sec> wrapper around it. Those are collected
+    into a single heading-less section so they aren't silently dropped.
+    """
     if not body:
         return []
-    return [parse_section(sec) for sec in body.find_all("sec", recursive=False)]
+    sections = []
+    direct_paragraphs = [p.get_text(" ", strip=True) for p in body.find_all("p", recursive=False)]
+    if direct_paragraphs:
+        sections.append({"heading": None, "paragraphs": direct_paragraphs, "subsections": []})
+    sections.extend(parse_section(sec) for sec in body.find_all("sec", recursive=False))
+    return sections
+
+
+def parse_self_uri_links(article_meta, pmcid):
+    """<self-uri> in <article-meta> points to another rendition of the same
+    article -- most often the PDF, when the publisher didn't submit full
+    structured text. Relative hrefs are resolved against the article's PMC
+    page as a best-effort guess, since that's where they're served from."""
+    base = f"https://pmc.ncbi.nlm.nih.gov/articles/{pmcid}/" if pmcid else None
+    links = []
+    for tag in article_meta.find_all("self-uri"):
+        href = tag.get("xlink:href")
+        if not href:
+            continue
+        if base and not href.startswith(("http://", "https://")):
+            href = base + href.lstrip("/")
+        links.append({
+            "content_type": tag.get("content-type"),
+            "href": href,
+            "text": text_or_none(tag),
+        })
+    return links
+
+
+def parse_body_ext_links(body):
+    """<ext-link> tags found directly in the body -- often a pointer to the
+    publisher's site when PMC only has a stub rather than real full text."""
+    if not body:
+        return []
+    return [
+        {"href": tag.get("xlink:href"), "text": text_or_none(tag)}
+        for tag in body.find_all("ext-link")
+        if tag.get("xlink:href")
+    ]
+
+
+def body_char_count(sections):
+    """Total character count across every paragraph, including subsections."""
+    total = 0
+    for sec in sections:
+        total += sum(len(p) for p in sec["paragraphs"])
+        total += body_char_count(sec["subsections"])
+    return total
 
 
 def parse_references(article):
@@ -262,7 +392,18 @@ def parse_article(xml_text, requested_pmcid=None):
     for author in authors:
         author["affiliations"] = [affiliations[i] for i in author["affiliation_ids"] if i in affiliations]
 
-    body_sections = parse_body(article)
+    body_tag = article.find("body")
+    body_sections = parse_body(body_tag)
+    alternate_renditions = parse_self_uri_links(article_meta, pmcid or requested_pmcid)
+    body_external_links = parse_body_ext_links(body_tag)
+
+    # A <body> that's present but tiny, paired with a link pointing elsewhere,
+    # is a stub rather than real full text (see THIN_BODY_CHAR_THRESHOLD above).
+    is_stub_body = (
+        bool(body_sections)
+        and body_char_count(body_sections) < THIN_BODY_CHAR_THRESHOLD
+        and bool(alternate_renditions or body_external_links)
+    )
 
     return {
         "pmcid": pmcid or requested_pmcid,
@@ -276,7 +417,10 @@ def parse_article(xml_text, requested_pmcid=None):
         "keywords": [k.get_text(strip=True) for k in article_meta.find_all("kwd")],
         "abstract": text_or_none(article_meta.find("abstract")),
         "body": body_sections,
-        "has_full_text": bool(body_sections),
+        "has_full_text": bool(body_sections) and not is_stub_body,
+        "is_stub_body": is_stub_body,
+        "alternate_renditions": alternate_renditions,
+        "body_external_links": body_external_links,
         "references": parse_references(article),
     }
 
@@ -292,10 +436,10 @@ def run_cli():
 
     out_dir = ensure_output_dir()
 
-    raw = input("PMCID(s) (e.g. PMC1234567 — separate multiple with spaces/commas): ")
-    ids = [x for x in raw.replace(",", " ").split() if x]
+    raw = input("Paste PMCID(s) or PMC URL(s) -- any separator, or none at all: ")
+    ids = extract_all_pmcids(raw)
     if not ids:
-        print("No PMCID provided.")
+        print("No PMCID found in that input.")
         sys.exit(1)
 
     # Optional: set these env vars to raise NCBI's rate limit from 3/sec to 10/sec
@@ -303,13 +447,11 @@ def run_cli():
     api_key = os.environ.get("NCBI_API_KEY")
     email = os.environ.get("NCBI_EMAIL")
 
+    pmcid_queue = build_pmcid_queue(ids)
     saved = 0
-    for i, raw_id in enumerate(ids):
-        try:
-            pmcid = normalize_pmcid(raw_id)
-        except ValueError as e:
-            print(f"Skipping '{raw_id}': {e}")
-            continue
+
+    def handle_one(pmcid):
+        nonlocal saved
 
         out_path = os.path.join(out_dir, f"{pmcid}.json")
         if os.path.isfile(out_path):
@@ -321,7 +463,7 @@ def run_cli():
                 out_path = make_unique_path(out_path)
             else:
                 print(f"Skipping {pmcid} (already scraped).\n")
-                continue
+                return
 
         print(f"Fetching {pmcid} ...")
         try:
@@ -329,15 +471,15 @@ def run_cli():
             data = parse_article(xml_text, requested_pmcid=pmcid)
         except (requests.RequestException, ValueError) as e:
             print(f"  -> failed: {e}\n")
-            continue
+            return
 
         with open(out_path, "w", encoding="utf-8") as f:
             json.dump(data, f, indent=2, ensure_ascii=False)
         print(f"  -> saved to {out_path}\n")
         saved += 1
 
-        if i < len(ids) - 1:
-            time.sleep(0.11 if api_key else 0.34)  # stay under NCBI's rate limit
+    requests_per_second = REQUESTS_PER_SECOND_WITH_KEY if api_key else REQUESTS_PER_SECOND_NO_KEY
+    drain_queue_rate_limited(pmcid_queue, handle_one, requests_per_second)
 
     print(f"Done. {saved} article(s) saved to {out_dir}")
 

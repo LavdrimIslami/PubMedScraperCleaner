@@ -1,7 +1,3 @@
-# PubMedScraperCleaner
-
-Note: made with claude
-
 # PMC Article Fetcher
 
 Fetch the full text of open-access PubMed Central (PMC) articles by PMCID and
@@ -16,11 +12,9 @@ Two ways to use it:
 
 ## Contents
 
-- [PubMedScraperCleaner](#pubmedscrapercleaner)
 - [PMC Article Fetcher](#pmc-article-fetcher)
   - [Contents](#contents)
   - [What it does](#what-it-does)
-  - [Features](#features)
   - [Project structure](#project-structure)
   - [Prerequisites](#prerequisites)
   - [Setup on Windows](#setup-on-windows)
@@ -56,21 +50,6 @@ parses that XML into a plain JSON dictionary containing:
 > outside it, EFetch (and therefore this tool) only returns citation/abstract
 > metadata, which is reflected in the output's `has_full_text` field.
 
-## Features
-An interactive GUI, with support for multiple scans at once
-
-<img width="562" height="412" alt="image" src="https://github.com/user-attachments/assets/17930b5f-a09f-4b7f-aa2e-8cfdf3fe3e23" />
-
-<img width="695" height="412" alt="image" src="https://github.com/user-attachments/assets/61a8533e-1683-4678-b590-59b9c77788ff" />
-
-
-Built in duplication detection
-
-<img width="382" height="172" alt="image" src="https://github.com/user-attachments/assets/a406e7f3-64ce-4d8b-858e-e014aedef6fe" />
-
-
-
-
 ## Project structure
 
 ```
@@ -78,6 +57,8 @@ main.py    Core logic: fetch, parse, and save. Also the single entry point —
            running it opens the GUI by default, or the terminal prompt with --cli.
 gui.py     Tkinter front-end. Imports its fetching/parsing functions from main.py
            rather than duplicating them.
+output/    Where JSON files are saved by default. Created automatically the
+           first time you run either main.py or gui.py.
 ```
 
 You need both files in the same folder — `gui.py` imports from `main.py`.
@@ -184,18 +165,27 @@ python main.py
    row has a small **"−"** button to remove it again (there's always at
    least one row left).
 3. **"Save to"** lets you pick the output folder for the JSON files (Browse…
-   opens a folder picker). It defaults to the folder you ran the app from.
+   opens a folder picker). It defaults to an **`output/`** folder inside the
+   project directory, created automatically if it doesn't exist yet.
 4. Click **Submit**. It's validated first:
    - Nothing entered → an error dialog, nothing is fetched.
    - An entry that isn't recognizable as a PMCID or PMC URL → an error dialog
      naming which entry, nothing is fetched.
-5. Once validated, articles are fetched one at a time in the background (the
+5. **Duplicate check.** For each entry, before any request is sent, it checks
+   whether that PMCID already has a saved JSON in the output folder. If so,
+   a popup asks: *fetch it again and save as a copy, or skip it?*
+   - **No (skip)** — that article is left alone; nothing is requested or
+     re-saved for it.
+   - **Yes (copy)** — it's fetched as normal, and saved alongside the
+     original as `PMC1234567 (2).json` (or `(3)`, etc.) rather than
+     overwriting it.
+6. Once everything is resolved, remaining articles are fetched one at a time in the background (the
    window stays responsive). You'll land on one of two result screens:
    - **✅ All articles fetched successfully** — every JSON file was saved.
    - **⚠ Some articles could not be fetched** — a per-article list showing
      which succeeded (and where the file went) and which failed (and why).
      Anything that *did* succeed is still saved to disk even if others failed.
-6. **"Start over"** clears the results and returns you to the input screen.
+7. **"Start over"** clears the results and returns you to the input screen.
 
 ## Usage — CLI
 
@@ -211,8 +201,17 @@ You'll be prompted once for one or more PMCIDs, separated by spaces or commas:
 PMCID(s) (e.g. PMC1234567 — separate multiple with spaces/commas): PMC1234567, PMC7654321
 ```
 
-- One PMCID → saved as `<PMCID>.json` in the current directory.
-- Multiple PMCIDs → saved together as a JSON array in `pmc_articles.json`.
+Each PMCID is saved as its own `<PMCID>.json` in the **`output/`** folder
+inside the project directory (created automatically). Before fetching, each
+one is checked against what's already there:
+
+```
+PMC1234567 already has a saved JSON (/path/to/output/PMC1234567.json). [S]kip or [c]ontinue as a copy?
+```
+
+Type `s` (or just press Enter) to skip it — no request is sent. Type `c` to
+fetch it anyway; it's saved alongside the original as `PMC1234567 (2).json`
+rather than overwriting it.
 
 **Optional environment variables** (CLI only) — set these to raise NCBI's
 rate limit from 3 to 10 requests/second and to follow their usage guidelines:
@@ -261,6 +260,9 @@ Each article becomes a JSON object like this (abridged):
     }
   ],
   "has_full_text": true,
+  "is_stub_body": false,
+  "alternate_renditions": [],
+  "body_external_links": [],
   "references": [
     {
       "id": "R1",
@@ -274,9 +276,26 @@ Each article becomes a JSON object like this (abridged):
 }
 ```
 
-If `has_full_text` is `false`, the article isn't in the PMC Open Access
-subset — you'll still get the title/authors/abstract/metadata, but `body`
-will be empty since EFetch doesn't return full text for it.
+`has_full_text` is `false` in two distinct situations, distinguishable by `is_stub_body`:
+
+- **No body at all** (`is_stub_body: false`, `body: []`) — the article isn't
+  in the PMC Open Access subset, so EFetch only returned metadata.
+- **A stub body** (`is_stub_body: true`) — PMC has *some* `<body>` XML, but
+  it's just a short pointer sentence rather than real content. This happens
+  when a publisher only deposited a PDF instead of structured full text —
+  common for older or scanned articles. `body` will contain that pointer
+  text (so it's not silently dropped), and `alternate_renditions` /
+  `body_external_links` will usually contain the actual PDF link:
+  - `alternate_renditions` — from `<self-uri>` in the article's own
+    metadata, the official "this article is also available as..." pointer
+    (almost always the PDF). Relative paths are resolved into a full
+    `pmc.ncbi.nlm.nih.gov` URL as a best-effort guess.
+  - `body_external_links` — any `<ext-link>` found directly in the body
+    text itself, e.g. "view the full article at [link]".
+
+Either way, these two fields are worth checking whenever `has_full_text` is
+`false` — they're your path to the actual full text when PMC doesn't have it
+in XML form.
 
 ## Troubleshooting
 
@@ -291,6 +310,11 @@ will be empty since EFetch doesn't return full text for it.
 - **An article returns `has_full_text: false` or an "NCBI returned an error"
   message** — the PMCID may not exist, or the article isn't part of the PMC
   Open Access subset, so only metadata is available (see [Known limitations](#known-limitations)).
+- **`body` just says something like "the full article is available at..."**
+  — this is a stub (`is_stub_body: true`), not a parsing failure. The
+  publisher only gave PMC a PDF rather than structured text. Check
+  `alternate_renditions` and `body_external_links` in the output for the
+  actual PDF/publisher link (see [Output format](#output-format)).
 - **Fetching many articles is slow / rate-limited** — see the `NCBI_API_KEY`
   / `NCBI_EMAIL` note under [Usage — CLI](#usage--cli).
 
