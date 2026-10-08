@@ -46,6 +46,15 @@ except ImportError:
 
 EFETCH_URL = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi"
 
+# NCBI's PMC Article Dataset on AWS -- public, no key, not subject to the
+# E-utilities rate limit. Each article version lives under "PMC123.N/" with
+# .xml, .txt, .pdf and a .json metadata file. For PDF-only articles, the .txt
+# holds NCBI's own text extraction of the PDF, which is used as a fallback
+# when the XML has no real body. (The PDF links on pmc.ncbi.nlm.nih.gov itself
+# sit behind a reCAPTCHA page, so they can't be downloaded by a script.)
+# Docs: https://pmc.ncbi.nlm.nih.gov/tools/pmcaws/
+PMC_S3_URL = "https://pmc-oa-opendata.s3.amazonaws.com"
+
 # Default save location: an "output" folder inside the project directory
 # (next to this file), rather than whatever the current working directory
 # happens to be when the script is launched.
@@ -205,6 +214,117 @@ def fetch_pmc_xml(pmcid, api_key=None, email=None, tool="pmc-fetch-script"):
             continue
         resp.raise_for_status()
         return resp.text
+
+
+S3_KEY_RE = re.compile(r"<Key>(.*?)</Key>")
+
+
+def latest_s3_files(pmcid):
+    """Lists pmcid's files in the PMC AWS bucket and returns
+    {extension: https URL} for the newest article version, or {} if the
+    article isn't in the bucket (i.e. it's outside the Open Access subset)."""
+    # The trailing "." keeps PMC123 from also matching PMC1234, PMC12345, etc.
+    resp = requests.get(
+        PMC_S3_URL + "/",
+        params={"list-type": "2", "prefix": f"{pmcid}."},
+        timeout=30,
+    )
+    resp.raise_for_status()
+
+    by_version = {}
+    for key in S3_KEY_RE.findall(resp.text):
+        folder, _, filename = key.partition("/")
+        version = folder.rpartition(".")[2]
+        if version.isdigit():
+            by_version.setdefault(int(version), []).append((key, filename))
+    if not by_version:
+        return {}
+
+    latest = by_version[max(by_version)]
+    # Only the article's own files (e.g. "PMC123.1.txt"), not figures or
+    # supplementary files, which have publisher-chosen names.
+    return {
+        os.path.splitext(filename)[1].lstrip("."): f"{PMC_S3_URL}/{key}"
+        for key, filename in latest
+        if filename.startswith(f"{pmcid}.")
+    }
+
+
+# A PDF line break in the middle of a word comes through as "pun- gent".
+# Between two lowercase letters it's almost always a split word, so the
+# pieces are rejoined; anywhere else ("HDL- cholesterol") it's more likely a
+# real hyphen, so only the stray space is removed.
+SPLIT_WORD_RE = re.compile(r"(?<=[a-z])- (?=[a-z])")
+HYPHEN_SPACE_RE = re.compile(r"(?<=\w)- (?=\w)")
+
+
+def _alnum(s):
+    return re.sub(r"[^a-z0-9]", "", s.lower())
+
+
+def clean_s3_text(txt, abstract=None):
+    """Strips the metadata header off a PMC AWS .txt file and returns just
+    the article text, with PDF line-break hyphens repaired.
+
+    The header ends at a line of '=' wrapped in \\x9f control characters.
+    The abstract comes next, and is dropped when it matches the one already
+    parsed from the XML, so it isn't duplicated in the output.
+    """
+    lines = txt.splitlines()
+    start = 0
+    for i, line in enumerate(lines):
+        stripped = line.strip("\x9f \t")
+        if stripped and set(stripped) == {"="}:
+            start = i + 1
+    text = "\n".join(lines[start:]).replace("\x9f", "").strip()
+
+    blocks = [b.strip() for b in re.split(r"\n\s*\n", text) if b.strip()]
+    abstract_key = _alnum(abstract or "")
+    # Compared letters/digits only, since the XML abstract tends to lose the
+    # spaces around italic tags ("ofEmbelia") while the .txt keeps them.
+    while blocks and abstract_key and _alnum(blocks[0]) in abstract_key:
+        blocks.pop(0)
+
+    text = "\n\n".join(blocks)
+    text = SPLIT_WORD_RE.sub("", text)
+    return HYPHEN_SPACE_RE.sub("-", text)
+
+
+def add_pdf_text_fallback(data):
+    """For an article with no real XML body, fills in `pdf_text` and
+    `pdf_url` from the PMC AWS bucket and sets `full_text_source` to "pdf".
+
+    Network failures are swallowed rather than raised: the XML metadata is
+    still worth saving even if the fallback couldn't be reached.
+    """
+    data["full_text_source"] = "xml" if data["has_full_text"] else None
+    data["pdf_url"] = None
+    data["pdf_text"] = None
+    if data["has_full_text"]:
+        return data
+
+    try:
+        files = latest_s3_files(data["pmcid"])
+        data["pdf_url"] = files.get("pdf")
+        if "txt" in files:
+            resp = requests.get(files["txt"], timeout=60)
+            resp.raise_for_status()
+            resp.encoding = "utf-8"
+            text = clean_s3_text(resp.text, abstract=data["abstract"])
+            if text:
+                data["pdf_text"] = text
+                data["full_text_source"] = "pdf"
+    except requests.RequestException:
+        pass
+    return data
+
+
+def fetch_article(pmcid, api_key=None, email=None):
+    """Fetches and parses one article, falling back to its PDF text when the
+    XML has no real body. Shared by the CLI and the GUI."""
+    xml_text = fetch_pmc_xml(pmcid, api_key=api_key, email=email)
+    data = parse_article(xml_text, requested_pmcid=pmcid)
+    return add_pdf_text_fallback(data)
 
 
 # NCBI's E-utilities rate limit: https://www.ncbi.nlm.nih.gov/books/NBK25497/
@@ -467,8 +587,7 @@ def run_cli():
 
         print(f"Fetching {pmcid} ...")
         try:
-            xml_text = fetch_pmc_xml(pmcid, api_key=api_key, email=email)
-            data = parse_article(xml_text, requested_pmcid=pmcid)
+            data = fetch_article(pmcid, api_key=api_key, email=email)
         except (requests.RequestException, ValueError) as e:
             print(f"  -> failed: {e}\n")
             return

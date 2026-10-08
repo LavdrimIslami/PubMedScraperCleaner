@@ -41,6 +41,7 @@ parses that XML into a plain JSON dictionary containing:
 - Abstract
 - The full body, broken into headings, paragraphs, and nested subsections
 - The reference list
+- For articles PMC only has as a PDF, the PDF's text (see [Output format](#output-format))
 
 > **Why EFetch, and not the old PMC Open Access Web Service or FTP bulk files?**
 > As of August 2026, NCBI retired both of those in favor of a few supported
@@ -263,6 +264,9 @@ Each article becomes a JSON object like this (abridged):
   "is_stub_body": false,
   "alternate_renditions": [],
   "body_external_links": [],
+  "full_text_source": "xml",
+  "pdf_url": null,
+  "pdf_text": null,
   "references": [
     {
       "id": "R1",
@@ -297,6 +301,28 @@ Either way, these two fields are worth checking whenever `has_full_text` is
 `false` — they're your path to the actual full text when PMC doesn't have it
 in XML form.
 
+### PDF text fallback
+
+Whenever `has_full_text` is `false`, the tool also checks NCBI's
+[PMC Article Dataset on AWS](https://pmc.ncbi.nlm.nih.gov/tools/pmcaws/)
+(`pmc-oa-opendata.s3.amazonaws.com`), which publishes NCBI's own plain-text
+extraction of each Open Access article's PDF. (The PDF links on the PMC
+website itself sit behind a CAPTCHA, so they can't be downloaded by a script.)
+If that text is found:
+
+- `pdf_text` — the article text taken from the PDF, as plain paragraphs. Unlike
+  `body`, it has **no section structure**, and may include running page
+  headers, the journal's own front matter, and the reference list inline.
+  Words split across PDF line breaks ("pun- gent") are rejoined.
+- `pdf_url` — a direct, downloadable link to the PDF.
+- `full_text_source` — `"pdf"`.
+
+`full_text_source` is the simplest field to check for "did I get the article
+text?": it's `"xml"` for a structured `body`, `"pdf"` for `pdf_text`, or
+`null` when neither was available. `has_full_text` keeps its original meaning
+(a structured XML body). If the AWS bucket can't be reached, the article is
+still saved, just with `pdf_text: null`.
+
 ## Troubleshooting
 
 - **`Couldn't find a tree builder with the features you requested: lxml-xml`**
@@ -312,9 +338,10 @@ in XML form.
   Open Access subset, so only metadata is available (see [Known limitations](#known-limitations)).
 - **`body` just says something like "the full article is available at..."**
   — this is a stub (`is_stub_body: true`), not a parsing failure. The
-  publisher only gave PMC a PDF rather than structured text. Check
-  `alternate_renditions` and `body_external_links` in the output for the
-  actual PDF/publisher link (see [Output format](#output-format)).
+  publisher only gave PMC a PDF rather than structured text. The PDF's
+  text is in `pdf_text` when available; otherwise check
+  `alternate_renditions` and `body_external_links` for the publisher link
+  (see [PDF text fallback](#pdf-text-fallback)).
 - **Fetching many articles is slow / rate-limited** — see the `NCBI_API_KEY`
   / `NCBI_EMAIL` note under [Usage — CLI](#usage--cli).
 

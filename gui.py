@@ -25,7 +25,7 @@ import threading
 import tkinter as tk
 from tkinter import ttk, messagebox, filedialog
 
-import main as pmc  # reuses normalize_pmcid / extract_all_pmcids / fetch_pmc_xml / parse_article / ...
+import main as pmc  # reuses normalize_pmcid / extract_all_pmcids / fetch_article / ...
 
 
 def extract_pmcid(raw_text):
@@ -312,8 +312,7 @@ class PMCFetcherApp:
 
         def handle_one(pmcid):
             try:
-                xml_text = pmc.fetch_pmc_xml(pmcid)
-                data = pmc.parse_article(xml_text, requested_pmcid=pmcid)
+                data = pmc.fetch_article(pmcid)
                 out_path = os.path.join(out_dir, f"{data['pmcid']}.json")
                 out_path = pmc.make_unique_path(out_path)  # e.g. "PMC123.json" -> "PMC123 (2).json"
                 with open(out_path, "w", encoding="utf-8") as f:
