@@ -61,6 +61,40 @@ class EntryRow:
         self.frame.destroy()
 
 
+class ProgressBar:
+    """A plain-tk (not ttk) green progress bar. ttk.Progressbar's color
+    can't be reliably changed under Windows' native theme, so this draws a
+    filled rectangle on a Canvas instead, which renders the same everywhere."""
+
+    def __init__(self, parent, height=18):
+        self.canvas = tk.Canvas(
+            parent, height=height, bg="#e0e0e0",
+            highlightthickness=1, highlightbackground="#bbbbbb",
+        )
+        self.bar = self.canvas.create_rectangle(0, 0, 0, height, fill="#2e9e44", width=0)
+        self.maximum = 1
+        self.value = 0
+        # Canvas width isn't known until it's laid out, and can change if the
+        # window is resized, so redraw whenever its size changes.
+        self.canvas.bind("<Configure>", lambda e: self._redraw())
+
+    def pack(self, **kwargs):
+        self.canvas.pack(**kwargs)
+
+    def set_maximum(self, maximum):
+        self.maximum = max(maximum, 1)
+        self.set_value(0)
+
+    def set_value(self, value):
+        self.value = min(value, self.maximum)
+        self._redraw()
+
+    def _redraw(self):
+        width = self.canvas.winfo_width()
+        height = self.canvas.winfo_height()
+        self.canvas.coords(self.bar, 0, 0, width * (self.value / self.maximum), height)
+
+
 class PMCFetcherApp:
     def __init__(self, root):
         self.root = root
@@ -69,6 +103,8 @@ class PMCFetcherApp:
 
         self.rows = []
         self.result_queue = queue.Queue()
+        self.progress_queue = queue.Queue()  # one tick per finished article
+        self._progress_value = 0
 
         self._build_input_screen()
 
@@ -129,6 +165,9 @@ class PMCFetcherApp:
         self.submit_btn = ttk.Button(bottom_frame, text="Submit", command=self.on_submit)
         self.submit_btn.pack(side="right")
 
+        # Progress bar: created now, but only packed (shown) once a fetch starts
+        self.progress = ProgressBar(self.main_frame)
+
         # Start with exactly one row, as specified
         self.add_row()
 
@@ -153,7 +192,8 @@ class PMCFetcherApp:
         any separator, or none at all -- then a Go button to fetch them."""
         modal = tk.Toplevel(self.root)
         modal.title("Paste a list of PMCIDs")
-        modal.geometry("420x320")
+        modal.geometry("640x420")
+        modal.minsize(500, 300)
         modal.transient(self.root)
         modal.grab_set()  # modal: blocks interaction with the main window until closed
 
@@ -163,6 +203,12 @@ class PMCFetcherApp:
                  "newlines, commas, spaces, or nothing at all.",
             justify="left",
         ).pack(anchor="w", padx=12, pady=(12, 6))
+
+        # Packed before the textbox so it reserves its space first: the
+        # expanding textbox can then only take what's left, which keeps the
+        # Go button visible however the window is sized.
+        btn_frame = ttk.Frame(modal)
+        btn_frame.pack(side="bottom", fill="x", padx=12, pady=12)
 
         text = tk.Text(modal, wrap="word")
         text.pack(fill="both", expand=True, padx=12)
@@ -176,8 +222,6 @@ class PMCFetcherApp:
             modal.destroy()
             self._start_fetch(pmcids)
 
-        btn_frame = ttk.Frame(modal)
-        btn_frame.pack(fill="x", padx=12, pady=12)
         ttk.Button(btn_frame, text="Go", command=go).pack(side="right")
         ttk.Button(btn_frame, text="Cancel", command=modal.destroy).pack(side="right", padx=(0, 8))
 
@@ -241,6 +285,9 @@ class PMCFetcherApp:
 
         self.submit_btn.config(state="disabled")
         self.status_label.config(text=f"Fetching {len(to_fetch)} article(s)...")
+        self._progress_value = 0
+        self.progress.set_maximum(len(to_fetch))
+        self.progress.pack(fill="x", pady=(8, 0))
         threading.Thread(target=self._fetch_all, args=(to_fetch, out_dir), daemon=True).start()
         self.root.after(100, self._poll_queue)
 
@@ -274,16 +321,27 @@ class PMCFetcherApp:
                 results.append({"pmcid": pmcid, "ok": True, "path": out_path})
             except Exception as e:
                 results.append({"pmcid": pmcid, "ok": False, "error": str(e)})
+            self.progress_queue.put(1)  # picked up by _poll_queue on the UI thread
 
-        # The GUI doesn't currently take an NCBI API key, so it always stays
-        # under the no-key limit: burst up to the max per 1-second window,
-        # then wait out the rest of that window before the next burst.
+        # The GUI doesn't currently take an NCBI API key, so it always uses
+        # the no-key limit, with requests spaced evenly rather than bursted.
         pmcid_queue = pmc.build_pmcid_queue(pmcids)
         pmc.drain_queue_rate_limited(pmcid_queue, handle_one, pmc.REQUESTS_PER_SECOND_NO_KEY)
 
         self.result_queue.put(results)
 
     def _poll_queue(self):
+        ticks = 0
+        while True:
+            try:
+                self.progress_queue.get_nowait()
+                ticks += 1
+            except queue.Empty:
+                break
+        if ticks:
+            self._progress_value += ticks
+            self.progress.set_value(self._progress_value)
+
         try:
             results = self.result_queue.get_nowait()
         except queue.Empty:
